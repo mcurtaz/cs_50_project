@@ -3,5 +3,6 @@ python-dotenv
 flask-smorest
 flask-sqlalchemy
 flask-migrate
+flask-jwt-extended
 passlib
 gunicorn

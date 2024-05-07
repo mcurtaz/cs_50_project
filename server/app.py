@@ -1,12 +1,17 @@
 import os
+import string
+import secrets
+
 from flask import Flask
 from flask_smorest import Api
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 
 import models
 
 from db import db
+from resources.user import blp as UserBlueprint
 
 def create_app(db_url=None):
     load_dotenv()
@@ -20,8 +25,13 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", str(secrets.SystemRandom().getrandbits(128)))
+    
     db.init_app(app)
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db) 
     api = Api(app)
+    jwt = JWTManager(app)
+
+    api.register_blueprint(UserBlueprint)
 
     return app
