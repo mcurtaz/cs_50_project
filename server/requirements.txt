@@ -1,0 +1,7 @@
+flask
+python-dotenv
+flask-smorest
+flask-sqlalchemy
+flask-migrate
+passlib
+gunicorn
