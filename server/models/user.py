@@ -6,3 +6,5 @@ class UserModel(db.Model):
 	id = db.Column(db.Integer(), primary_key=True)  
 	email = db.Column(db.String(), unique=True, nullable=False)  
 	password = db.Column(db.String(), nullable=False)
+
+	movies = db.relationship("MovieModel", back_populates="user", lazy="dynamic")

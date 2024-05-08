@@ -2,15 +2,22 @@ from marshmallow import Schema, fields
 
 from models.movie import StatusEnum
 
-class UserSchema(Schema):
+class PlainUserSchema(Schema):
     id = fields.Int(required=True, dump_only=True)
     email = fields.Email(required=True)
     password = fields.Str(required=True, load_only=True)
 
-class MovieSchema(Schema):
+class PlainMovieSchema(Schema):
     id = fields.Int(required=True, dump_only=True)
-    image_url = fields.Url(equired=False)
+    # user_id = fields.Int(required=True, dump_only=True) This is handled by the application throught the access_token
+    image_url = fields.Url()
     title = fields.Str(required=True)
-    description = fields.Str(required=False)
-    rating = fields.Int(required=False)
+    description = fields.Str()
+    rating = fields.Int()
     status = fields.Enum(enum=StatusEnum, by_value=False)
+
+class MovieSchema(PlainMovieSchema):
+    user = fields.Nested(PlainUserSchema(), dump_only=True)
+
+class UserSchema(PlainUserSchema):
+    movies = fields.List(fields.Nested(PlainMovieSchema()), dump_only=True)
