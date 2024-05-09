@@ -19,4 +19,4 @@ class MovieModel(db.Model):
     status = db.Column(db.Enum(StatusEnum))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique=False, nullable=False)
 
-    user = db.relationship("UserModel", back_populates="movies", lazy="dynamic", cascade="all, delete")
+    user = db.relationship("UserModel", back_populates="movies")

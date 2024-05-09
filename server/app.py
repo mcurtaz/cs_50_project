@@ -1,5 +1,4 @@
 import os
-import string
 import secrets
 
 from flask import Flask
@@ -7,8 +6,6 @@ from flask_smorest import Api
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
-
-import models
 
 from db import db
 from resources.user import blp as UserBlueprint

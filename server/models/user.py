@@ -7,4 +7,4 @@ class UserModel(db.Model):
 	email = db.Column(db.String(), unique=True, nullable=False)  
 	password = db.Column(db.String(), nullable=False)
 
-	movies = db.relationship("MovieModel", back_populates="user", lazy="dynamic")
+	movies = db.relationship("MovieModel", back_populates="user", lazy="dynamic", cascade="all, delete")
