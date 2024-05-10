@@ -4,10 +4,11 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
-    get_jwt,
     jwt_required,
 )
 from passlib.hash import pbkdf2_sha256
+
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from db import db
 from models import UserModel
@@ -18,17 +19,19 @@ blp = Blueprint("Users", __name__, description="Operations on users")
 @blp.route("/register")  
 class UserRegister(MethodView):
 	@blp.arguments(UserSchema)
-	def post(self, user_data):
-		if UserModel.query.filter(UserModel.email == user_data["email"]).first():
-			abort(409, message="A user with that email already exists.")
-		  
+	def post(self, user_data):  
 		user = UserModel(
 			email=user_data["email"],
 			password=pbkdf2_sha256.hash(user_data["password"]),
 		)
 		
-		db.session.add(user)
-		db.session.commit()
+		try:
+			db.session.add(user)
+			db.session.commit()
+		except IntegrityError:
+			abort(409, message="A user with that email already exists.")
+		except SQLAlchemyError:
+			abort(500, message="An error occurred creating the store.")
 
 		return {"message": "User created successfully."}, 201
 

@@ -5,8 +5,11 @@ from flask_jwt_extended import (
 	get_jwt_identity
 )
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from db import db
 from models import MovieModel
+from models import UserModel
 from schemas import MovieSchema
 
 blp = Blueprint("Movies", __name__, description="Operations on movies")
@@ -33,7 +36,7 @@ class MovieList(MethodView):
 		
 		return movie
 
-@blp.route("/movie/<string: movie_id>")
+@blp.route("/movie/<string:movie_id>")
 class Movie(MethodView):
 	@jwt_required()
 	@blp.response(200, MovieSchema())
@@ -70,5 +73,5 @@ class Movie(MethodView):
 		if movie.user_id != get_jwt_identity():
 			abort(403, message="Insufficient permissions to access the resource")
 
-		item.delete_from_db()
-        return {"message": "Item deleted."}
+		movie.delete_from_db()
+		return {"message": "Movie deleted."}, 200
