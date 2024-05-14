@@ -19,7 +19,7 @@ class MovieList(MethodView):
 	@jwt_required()
 	@blp.response(200, PlainMovieSchema(many=True))
 	def get(self):
-		user = UserModel.query.get_or_404(get_jwt_identity());
+		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
 		return user.movies.all()
 
 	@jwt_required() 
@@ -44,7 +44,7 @@ class Movie(MethodView):
 		if not movie_id:
 			abort(400, message="Missing movie id")
 
-		movie = MovieModel.query.get_or_404(movie_id)
+		movie = MovieModel.query.filter_by(id=movie_id).one_or_404()
 		return movie
 
 	@jwt_required()
@@ -54,7 +54,7 @@ class Movie(MethodView):
 		if not movie_id:
 			abort(400, message="Missing movie id")
 
-		movie = MovieModel.query.get(movie_id)
+		movie = db.session.get(MovieModel, movie_id)
 
 		if movie and movie.user_id != get_jwt_identity():
 			abort(403, message="Insufficient permissions to access the resource")
@@ -86,7 +86,7 @@ class Movie(MethodView):
 		if not movie_id:
 			abort(400, message="Missing movie id")
 
-		movie = MovieModel.query.get_or_404(movie_id)
+		movie = MovieModel.query.filter_by(id=movie_id).one_or_404()
 
 		if movie.user_id != get_jwt_identity():
 			abort(403, message="Insufficient permissions to access the resource")
