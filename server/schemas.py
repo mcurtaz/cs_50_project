@@ -16,6 +16,13 @@ class PlainMovieSchema(Schema):
     rating = fields.Int()
     status = fields.Enum(enum=StatusEnum, by_value=False)
 
+class MoviePutSchema(Schema):
+    image_url = fields.Url()
+    title = fields.Str()
+    description = fields.Str()
+    rating = fields.Int()
+    status = fields.Enum(enum=StatusEnum, by_value=False)
+
 class MovieSchema(PlainMovieSchema):
     user = fields.Nested(PlainUserSchema(), dump_only=True)
 

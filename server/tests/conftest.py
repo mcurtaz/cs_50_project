@@ -5,6 +5,10 @@ sys.path.append('../server')
 import pytest
 from flask_migrate import upgrade as flask_migrate_upgrade
 
+from flask_jwt_extended import (
+    create_access_token
+)
+
 from app import create_app
 from db import db as _db
 
@@ -51,10 +55,5 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture(scope="function")
-def access_token(client):
-    response = client.post(
-        "/login",
-        json={"email": os.environ["USER_EMAIL"], "password": os.environ["USER_PASSWORD"]}
-    )
-
-    return response.json["access_token"]
+def access_token(client, session):
+    return create_access_token(identity=1, fresh=True)

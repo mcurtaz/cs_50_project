@@ -23,6 +23,7 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
+    app.config['SQLALCHEMY_ECHO'] = True # enable to debug
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", str(secrets.SystemRandom().getrandbits(128)))
     
     db.init_app(app)

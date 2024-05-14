@@ -10,14 +10,14 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from models import MovieModel
 from models import UserModel
-from schemas import MovieSchema
+from schemas import MovieSchema, MoviePutSchema, PlainMovieSchema
 
 blp = Blueprint("Movies", __name__, description="Operations on movies")
 
 @blp.route("/movie")
 class MovieList(MethodView):
 	@jwt_required()
-	@blp.response(200, MovieSchema(many=True))
+	@blp.response(200, PlainMovieSchema(many=True))
 	def get(self):
 		user = UserModel.query.get_or_404(get_jwt_identity());
 		return user.movies.all()
@@ -39,22 +39,37 @@ class MovieList(MethodView):
 @blp.route("/movie/<string:movie_id>")
 class Movie(MethodView):
 	@jwt_required()
-	@blp.response(200, MovieSchema())
+	@blp.response(200, PlainMovieSchema())
 	def get(self, movie_id):
+		if not movie_id:
+			abort(400, message="Missing movie id")
+
 		movie = MovieModel.query.get_or_404(movie_id)
 		return movie
 
 	@jwt_required()
-	@blp.arguments(MovieSchema)
-	@blp.response(200, MovieSchema)
+	@blp.arguments(MoviePutSchema)
+	@blp.response(200, PlainMovieSchema)
 	def put(self, movie_data, movie_id):
+		if not movie_id:
+			abort(400, message="Missing movie id")
+
 		movie = MovieModel.query.get(movie_id)
 
-		if movie.user_id != get_jwt_identity():
+		if movie and movie.user_id != get_jwt_identity():
 			abort(403, message="Insufficient permissions to access the resource")
 	
 		if movie:
-			movie |= movie_data
+			if "image_url" in movie_data:
+				movie.image_url = movie_data["image_url"]
+			if "title" in movie_data:
+				movie.title = movie_data["title"]
+			if "description" in movie_data:
+				movie.description = movie_data["description"]
+			if "rating" in movie_data:
+				movie.rating = movie_data["rating"]
+			if "status" in movie_data:
+				movie.status = movie_data["status"]
 		else:
 			movie = MovieModel(**movie_data)  
 			db.session.add(movie)  
@@ -68,10 +83,15 @@ class Movie(MethodView):
 
 	@jwt_required()
 	def delete(self, movie_id):
+		if not movie_id:
+			abort(400, message="Missing movie id")
+
 		movie = MovieModel.query.get_or_404(movie_id)
 
 		if movie.user_id != get_jwt_identity():
 			abort(403, message="Insufficient permissions to access the resource")
 
-		movie.delete_from_db()
+		db.session.delete(movie)
+		db.session.commit()
+
 		return {"message": "Movie deleted."}, 200
