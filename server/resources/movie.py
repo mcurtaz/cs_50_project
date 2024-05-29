@@ -24,7 +24,7 @@ class MovieList(MethodView):
 
 	@jwt_required() 
 	@blp.arguments(MovieSchema)  
-	@blp.response(201, MovieSchema)  
+	@blp.response(201, PlainMovieSchema)  
 	def post(self, movie_data):  
 		movie = MovieModel(**movie_data, user_id = get_jwt_identity())
 	

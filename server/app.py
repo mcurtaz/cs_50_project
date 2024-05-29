@@ -10,6 +10,7 @@ from flask_jwt_extended import JWTManager
 from db import db
 from resources.user import blp as UserBlueprint
 from resources.movie import blp as MovieBlueprint
+from resources.book import blp as BookBlueprint
 
 def create_app(db_url=None):
     load_dotenv()
@@ -33,5 +34,6 @@ def create_app(db_url=None):
 
     api.register_blueprint(UserBlueprint)
     api.register_blueprint(MovieBlueprint)
+    api.register_blueprint(BookBlueprint)
 
     return app
