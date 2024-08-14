@@ -14,7 +14,7 @@ type LoginResponse = {
   "refresh_token": string
 }
 
-function App() {
+const Login: React.FC = () => {
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -89,4 +89,4 @@ function App() {
   )
 }
 
-export default App
+export default Login
