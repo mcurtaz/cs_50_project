@@ -4,5 +4,6 @@ flask-smorest
 flask-sqlalchemy
 flask-migrate
 flask-jwt-extended
+flask-cors
 passlib
 gunicorn

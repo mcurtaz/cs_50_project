@@ -6,6 +6,7 @@ from flask_smorest import Api
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from db import db
 from resources.user import blp as UserBlueprint
@@ -26,6 +27,8 @@ def create_app(db_url=None):
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config['SQLALCHEMY_ECHO'] = False # enable to debug
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", str(secrets.SystemRandom().getrandbits(128)))
+
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
     
     db.init_app(app)
     migrate = Migrate(app, db) 

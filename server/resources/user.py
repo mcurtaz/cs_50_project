@@ -50,6 +50,17 @@ class UserLogin(MethodView):
 
 		abort(401, message="Invalid credentials.")
 
+@blp.route("/me")
+class UserLogin(MethodView):
+	@jwt_required()
+	def post(self):
+		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
+
+		if user:
+			return {"email": user.email}, 200
+
+		abort(401, message="Invalid credentials.")
+
 @blp.route("/refresh")
 class TokenRefresh(MethodView):
 	@jwt_required(refresh=True)
