@@ -27,6 +27,7 @@ def create_app(db_url=None):
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config['SQLALCHEMY_ECHO'] = False # enable to debug
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", str(secrets.SystemRandom().getrandbits(128)))
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 900 # 15 minutes
 
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
     
@@ -35,8 +36,8 @@ def create_app(db_url=None):
     api = Api(app)
     jwt = JWTManager(app)
 
-    api.register_blueprint(UserBlueprint)
-    api.register_blueprint(MovieBlueprint)
-    api.register_blueprint(BookBlueprint)
+    api.register_blueprint(UserBlueprint, url_prefix='/api')
+    api.register_blueprint(MovieBlueprint, url_prefix='/api')
+    api.register_blueprint(BookBlueprint, url_prefix='/api')
 
     return app

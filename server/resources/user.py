@@ -12,7 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from db import db
 from models import UserModel
-from schemas import UserSchema
+from schemas import UserSchema, PlainUserSchema
 
 blp = Blueprint("Users", __name__, description="Operations on users")
 
@@ -53,13 +53,11 @@ class UserLogin(MethodView):
 @blp.route("/me")
 class UserLogin(MethodView):
 	@jwt_required()
+	@blp.response(200, PlainUserSchema)  
 	def post(self):
 		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
-
-		if user:
-			return {"email": user.email}, 200
-
-		abort(401, message="Invalid credentials.")
+		
+		return user
 
 @blp.route("/refresh")
 class TokenRefresh(MethodView):
