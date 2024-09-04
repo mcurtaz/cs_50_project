@@ -4,17 +4,16 @@ import { Label } from "@/components/ui/label"
 
 import axios, {AxiosError} from "axios"
 
-import './App.css'
 import { useState } from "react"
 
 const BASE_URL = import.meta.env.VITE_SERVER_BASEURL;
 
-type LoginResponse = {
+type RegisterResponse = {
   "access_token": string,
   "refresh_token": string
 }
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -32,10 +31,10 @@ const Login: React.FC = () => {
     })
   }
   
-  const submitLogin = async () => {
+  const submitRegister = async () => {
     try {
-      let response = await axios.post<LoginResponse>(
-        BASE_URL + "login", 
+      let response = await axios.post<RegisterResponse>(
+        BASE_URL + "register", 
         form, 
         {
           headers: {
@@ -45,9 +44,6 @@ const Login: React.FC = () => {
           }
         }
       )
-
-      sessionStorage.setItem("access_token", response.data.access_token)
-      sessionStorage.setItem("refresh_token", response.data.refresh_token)
 
     } catch (error: unknown | AxiosError) {
       if (axios.isAxiosError(error))  {
@@ -83,10 +79,10 @@ const Login: React.FC = () => {
           <Label htmlFor="password">Password</Label>
           <Input type="password" onChange={handleForm} value={form.password} name="password" id="password" placeholder="Password" />
         </div>
-        <Button type="button" onClick={submitLogin}>Invia</Button>
+        <Button type="button" onClick={submitRegister}>Register</Button>
       </form>
     </>
   )
 }
 
-export default Login
+export default Register
