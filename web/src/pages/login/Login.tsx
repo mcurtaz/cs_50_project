@@ -1,25 +1,31 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 import { CircleAlert } from 'lucide-react';
 
-import axios, {AxiosError, AxiosResponse} from "axios"
+import axios, {AxiosError} from "axios"
 
-import { useEffect, useState } from "react"
-import { Form, useNavigation, useActionData } from "react-router-dom"
+import { useEffect, useState, useContext } from "react"
+import { Form, useNavigation, useActionData, useNavigate } from "react-router-dom"
+
+import { UserContext } from "@/store/UserContext";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 type LoginResponse = {
   "access_token": string,
-  "refresh_token": string
+  "refresh_token": string,
+  "user": {
+    "id": number,
+    "email": string
+  }
 }
 
 type actionReponse = {
   isError: boolean,
-  response?: AxiosResponse<LoginResponse, any>,
+  response?: LoginResponse,
   errors?: string[],
   status: number
 }
@@ -27,7 +33,10 @@ type actionReponse = {
 const Login: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
+  const {user, setUser} = useContext(UserContext);
+
   const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const isSubmitting = navigation.state === 'submitting';
 
@@ -36,15 +45,24 @@ const Login: React.FC = () => {
   useEffect(() => {
     if(!data){
       setErrors([]);
+      if(user.isLogged) navigate("/home")
     }else if(data.isError && data.errors){
       setErrors(data.errors);
-    }else if(!data.isError){
+    }else if(!data.isError && data.response){
       setErrors([]);
-      sessionStorage.setItem("access_token", data.response?.data.access_token)
-      sessionStorage.setItem("refresh_token", data.response?.data.refresh_token)
+      sessionStorage.setItem("access_token", data.response?.access_token)
+      sessionStorage.setItem("refresh_token", data.response?.refresh_token)
       let expiration = new Date();
       expiration.setMinutes(expiration.getMinutes() + 15);
       sessionStorage.setItem("access_token_expiration", expiration.toISOString())
+
+      setUser({
+        isLogged: true, 
+        id: data.response.user.id,
+        email: data.response.user.email
+      })
+
+      navigate("/home");
     }
   }, [data])
   
@@ -98,11 +116,10 @@ export const submitLogin = async ({request}: {request: Request}) => {
     return {
       isError: false,
       status: 200,
-      response: response
+      response: response.data
     }
 
-  } catch (error: unknown | AxiosError) {
-    console.log(JSON.stringify(error))    
+  } catch (error: unknown | AxiosError) {  
     if (axios.isAxiosError(error))  {
       // Access to config, request, and response
       if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
