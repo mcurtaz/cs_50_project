@@ -12,7 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from db import db
 from models import UserModel
-from schemas import UserSchema, PlainUserSchema
+from schemas import UserSchema, PlainUserSchema, LoginResponseSchema
 
 blp = Blueprint("Users", __name__, description="Operations on users")
 
@@ -38,6 +38,7 @@ class UserRegister(MethodView):
 @blp.route("/login")
 class UserLogin(MethodView):
 	@blp.arguments(UserSchema)
+	@blp.response(200, LoginResponseSchema)
 	def post(self, user_data):
 		user = UserModel.query.filter(
 			UserModel.email == user_data["email"]
@@ -46,7 +47,7 @@ class UserLogin(MethodView):
 		if user and pbkdf2_sha256.verify(user_data["password"], user.password):
 			access_token = create_access_token(identity=user.id, fresh=True)
 			refresh_token = create_refresh_token(user.id)
-			return {"access_token": access_token, "refresh_token": refresh_token}, 200
+			return {"access_token": access_token, "refresh_token": refresh_token, "user": user}, 200
 
 		abort(401, message="Invalid credentials.")
 

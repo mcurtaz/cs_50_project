@@ -51,3 +51,8 @@ class BookSchema(PlainBookSchema):
 
 class UserSchema(PlainUserSchema):
     movies = fields.List(fields.Nested(PlainMovieSchema()), dump_only=True)
+
+class LoginResponseSchema(Schema):
+    access_token = fields.Str(required=True)
+    refresh_token = fields.Str(required=True)
+    user = fields.Nested(PlainUserSchema(), dump_only=True)
