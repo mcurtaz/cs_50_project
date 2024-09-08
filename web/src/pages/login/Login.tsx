@@ -8,7 +8,7 @@ import { CircleAlert } from 'lucide-react';
 import axios, {AxiosError} from "axios"
 
 import { useEffect, useState, useContext } from "react"
-import { Form, useNavigation, useActionData, useNavigate } from "react-router-dom"
+import { Form, useNavigation, useActionData, useNavigate, Link } from "react-router-dom"
 
 import { UserContext } from "@/store/UserContext";
 
@@ -67,24 +67,31 @@ const Login: React.FC = () => {
   }, [data])
   
   return (
-    <>
-      <Form method="post">
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input type="email" name="email" placeholder="Email" required/>
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="password">Password</Label>
-          <Input type="password" name="password" placeholder="Password" required/>
-        </div>
-        {errors.length > 0 && 
-          <Alert variant="destructive">
-            {errors.map((err) => <AlertDescription key={err} className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/>{err}</AlertDescription>)}
-          </Alert>
-        }
-        <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Login"}</Button>
-      </Form>
-    </>
+    <div className="w-7/12 border p-4 shadow-lg rounded-lg flex items-stretch bg-white">
+      <div className="w-1/2 pr-2">
+        <img src="login-illustration.webp" className="w-full rounded"/>
+      </div>
+      <div className="w-1/2 px-2 flex flex-col justify-between">
+        <Form method="post">
+          <h1 className="mb-6 text-2xl">Login</h1>
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-3">
+            <Label htmlFor="email">Email</Label>
+            <Input type="email" name="email" placeholder="Email" required/>
+          </div>
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
+            <Label htmlFor="password">Password</Label>
+            <Input type="password" name="password" placeholder="Password" required/>
+          </div>
+          {errors.length > 0 && 
+            <Alert variant="destructive" className="mb-4">
+              {errors.map((err) => <AlertDescription key={err} className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/>{err}</AlertDescription>)}
+            </Alert>
+          }
+          <Button className="bg-pink-500" type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Login"}</Button>
+        </Form>
+        <p className="text-sm">Don't have an account yet? <Link className="text-pink-500 hover:text-pink-900" to="/register"><strong>Sign up now for free.</strong></Link></p>
+      </div>
+    </div>
   )
 }
 
@@ -119,7 +126,7 @@ export const submitLogin = async ({request}: {request: Request}) => {
       response: response.data
     }
 
-  } catch (error: unknown | AxiosError) {  
+  } catch (error: unknown | AxiosError) {
     if (axios.isAxiosError(error))  {
       // Access to config, request, and response
       if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
@@ -130,6 +137,8 @@ export const submitLogin = async ({request}: {request: Request}) => {
         })
       }else if(error.response?.status == 401){ // wrong credentials
         errors.push(error.response?.data.message)
+      }else{
+        errors.push(error.message)
       }
     } else {
       // Just a stock error

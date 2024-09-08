@@ -5,9 +5,9 @@ import './App.css'
 import { UserContextProvider } from './store/UserContext'
 
 import Login, { submitLogin } from "./pages/login/Login"
-import Register from "./pages/register/Register"
+import Register, { submitRegister } from "./pages/register/Register"
 
-import Books from './pages/books/Books'
+import Books, { fetchBooks } from './pages/books/Books'
 import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
@@ -27,7 +27,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/books", 
-        element: <Books/>
+        element: <Books/>,
+        loader: fetchBooks
       }
     ]
   },
@@ -42,15 +43,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
+    action: submitRegister
   }
 ])
 
 function App() {
   return (
-    <UserContextProvider>
-      <RouterProvider router={router} />
-    </UserContextProvider>
+    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-sky-500 to-sky-950">
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
+    </div>
   )
 }
 
