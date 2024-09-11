@@ -27,7 +27,7 @@ type actionReponse = {
 
 const Register: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
-  const {user, setUser} = useContext(UserContext);
+  const {user} = useContext(UserContext);
 
   const [success, setSuccess] = useState(false);
 
@@ -56,45 +56,36 @@ const Register: React.FC = () => {
   }, [data])
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-sky-500 to-sky-950">
-      <div className="w-7/12 border p-4 shadow-lg rounded-lg flex items-stretch bg-white">
-        <div className="w-1/2 pr-2">
-          <img src="login-illustration.webp" className="w-full rounded"/>
-        </div>
-        <div className="w-1/2 px-2 flex flex-col justify-between">
-          <Form method="post">
-            <h1 className="mb-6 text-2xl">Sign up</h1>
-            {
-              !success && (
-                <>
-                  <div className="grid w-full max-w-sm items-center gap-1.5 mb-3">
-                    <Label htmlFor="email">Email</Label>
-                    <Input type="email" name="email" placeholder="Email" required/>
-                  </div>
-                  <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
-                    <Label htmlFor="password">Password</Label>
-                    <Input type="password" name="password" placeholder="Password" required/>
-                  </div>
-                  {errors.length > 0 && 
-                    <Alert variant="destructive" className="mb-4">
-                      {errors.map((err) => <AlertDescription key={err} className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/>{err}</AlertDescription>)}
-                    </Alert>
-                  }
-                  <Button className="bg-pink-500" type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Sign up"}</Button>
-                </>
-              )
-            }
-            {
-              success && (
-                <Alert className="text-emerald-600">
-                  <AlertTitle className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/> Account created successfully!</AlertTitle>
-                  <AlertDescription >You can <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in now.</strong></Link></AlertDescription>
-                </Alert>
-              )
-            }
-          </Form>
-          <p className="text-sm">Have an account already? <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in.</strong></Link></p>
-        </div>
+    <div className="w-full h-full lg:h-auto lg:w-2/3 2xl:w-2/5 border p-4 lg:shadow-lg lg:rounded-lg flex items-stretch bg-white">
+      <div className="w-0 md:w-1/2 pr-2 invisible md:visible flex items-center">
+        <img src="/login-illustration.webp" className="w-full rounded"/>
+      </div>
+      <div className="w-full md:w-1/2 px-2 flex flex-col justify-between">
+        <Form className="flex flex-col items-center flex-grow justify-center" method="post">
+          <h1 className="mb-10 text-2xl">SIGN UP</h1>
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
+            <Label htmlFor="email">Email</Label>
+            <Input type="email" name="email" placeholder="Email" required/>
+          </div>
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-8">
+            <Label htmlFor="password">Password</Label>
+            <Input type="password" name="password" placeholder="Password" required/>
+          </div>
+          {errors.length > 0 && 
+            <Alert variant="destructive" className="mb-4">
+              {errors.map((err) => <AlertDescription key={err} className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/>{err}</AlertDescription>)}
+            </Alert>
+          }
+          {!success && <Button className="bg-pink-500" type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Sign up"}</Button>}
+          {success && (
+              <Alert className="text-emerald-600">
+                <AlertTitle className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/> Account created successfully!</AlertTitle>
+                <AlertDescription >You can <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in</strong></Link>now.</AlertDescription>
+              </Alert>
+            )
+          }
+        </Form>
+        <p className="text-sm">Have an account already? <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in.</strong></Link></p>
       </div>
     </div>
   )

@@ -34,7 +34,7 @@ const MainNavigation: React.FC = () => {
                     <li className="lg:mt-6">
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-500" : "hover:text-pink-900"} 
-                            to="/books"
+                            to="/book"
                         >
                             <div className="flex flex-col items-center">
                                 <BookOpenText size={24}/>

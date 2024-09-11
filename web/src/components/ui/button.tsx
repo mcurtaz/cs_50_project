@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-pink-900 text-pink-50 shadow hover:bg-pink-900/90 dark:bg-pink-50 dark:text-pink-900 dark:hover:bg-pink-50/90",
+          "bg-pink-600 text-pink-50 shadow hover:bg-pink-600/90 dark:bg-pink-50 dark:text-pink-900 dark:hover:bg-pink-50/90",
         destructive:
           "bg-red-500 text-pink-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-pink-50 dark:hover:bg-red-900/90",
         outline:
@@ -24,7 +24,7 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        icon: "h-11 w-11 rounded-full",
       },
     },
     defaultVariants: {

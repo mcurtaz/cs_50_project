@@ -69,11 +69,11 @@ const Login: React.FC = () => {
   return (
     <div className="w-full h-full lg:h-auto lg:w-2/3 2xl:w-2/5 border p-4 lg:shadow-lg lg:rounded-lg flex items-stretch bg-white">
       <div className="w-0 md:w-1/2 pr-2 invisible md:visible flex items-center">
-        <img src="login-illustration.webp" className="w-full rounded"/>
+        <img src="/login-illustration.webp" className="w-full rounded"/>
       </div>
       <div className="w-full md:w-1/2 px-2 flex flex-col justify-between">
         <Form className="flex flex-col items-center flex-grow justify-center" method="post">
-          <h1 className="mb-10 text-2xl">Login</h1>
+          <h1 className="mb-10 text-2xl">LOGIN</h1>
           <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
             <Label htmlFor="email">Email</Label>
             <Input type="email" name="email" placeholder="Email" required/>
@@ -87,7 +87,7 @@ const Login: React.FC = () => {
               {errors.map((err) => <AlertDescription key={err} className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/>{err}</AlertDescription>)}
             </Alert>
           }
-          <Button className="bg-pink-500" type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Login"}</Button>
+          <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Loading..." : "Login"}</Button>
         </Form>
         <p className="text-sm">Don't have an account yet? <Link className="text-pink-500 hover:text-pink-900" to="/register"><strong>Sign up now for free.</strong></Link></p>
       </div>

@@ -6,7 +6,8 @@ import { UserContextProvider } from './store/UserContext'
 
 import Login, { submitLogin } from "./pages/login/Login"
 import Register, { submitRegister } from "./pages/register/Register"
-import Books, { fetchBooks } from './pages/books/Books'
+import BookList, { fetchBookList } from './pages/books/BookList'
+import BookAdd, { submitBookAdd } from './pages/books/BookAdd'
 import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
@@ -17,18 +18,23 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainNavigation />,
     children: [
-      {
-        index: true,
-        element: <Navigate replace to='/home'/>
-      },
+      // {
+      //   index: true,
+      //   element: <Navigate replace to='/home'/>
+      // },
       {
         path: "/home", 
         element: <Home/>
       },
       {
-        path: "/books", 
-        element: <Books/>,
-        loader: fetchBooks
+        path: "/book", 
+        element: <BookList/>,
+        loader: fetchBookList
+      },
+      {
+        path: "/book/add", 
+        element: <BookAdd/>,
+        action: submitBookAdd
       },
       {
         path: "/profile", 
