@@ -67,18 +67,18 @@ const Login: React.FC = () => {
   }, [data])
   
   return (
-    <div className="w-7/12 border p-4 shadow-lg rounded-lg flex items-stretch bg-white">
-      <div className="w-1/2 pr-2">
+    <div className="w-full h-full lg:h-auto lg:w-2/3 2xl:w-2/5 border p-4 lg:shadow-lg lg:rounded-lg flex items-stretch bg-white">
+      <div className="w-0 md:w-1/2 pr-2 invisible md:visible flex items-center">
         <img src="login-illustration.webp" className="w-full rounded"/>
       </div>
-      <div className="w-1/2 px-2 flex flex-col justify-between">
-        <Form method="post">
-          <h1 className="mb-6 text-2xl">Login</h1>
-          <div className="grid w-full max-w-sm items-center gap-1.5 mb-3">
+      <div className="w-full md:w-1/2 px-2 flex flex-col justify-between">
+        <Form className="flex flex-col items-center flex-grow justify-center" method="post">
+          <h1 className="mb-10 text-2xl">Login</h1>
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
             <Label htmlFor="email">Email</Label>
             <Input type="email" name="email" placeholder="Email" required/>
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
+          <div className="grid w-full max-w-sm items-center gap-1.5 mb-8">
             <Label htmlFor="password">Password</Label>
             <Input type="password" name="password" placeholder="Password" required/>
           </div>

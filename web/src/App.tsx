@@ -6,11 +6,11 @@ import { UserContextProvider } from './store/UserContext'
 
 import Login, { submitLogin } from "./pages/login/Login"
 import Register, { submitRegister } from "./pages/register/Register"
-
 import Books, { fetchBooks } from './pages/books/Books'
 import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
+import Profile from './pages/profile/Profile'
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,11 @@ const router = createBrowserRouter([
         path: "/books", 
         element: <Books/>,
         loader: fetchBooks
-      }
+      },
+      {
+        path: "/profile", 
+        element: <Profile/>
+      },
     ]
   },
   {
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-sky-500 to-sky-950">
+    <div className="text-slate-700 w-screen h-screen flex items-center justify-center bg-gradient-to-br from-sky-500 to-sky-950">
       <UserContextProvider>
         <RouterProvider router={router} />
       </UserContextProvider>

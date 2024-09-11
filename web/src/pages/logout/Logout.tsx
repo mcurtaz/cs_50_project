@@ -23,16 +23,16 @@ const Logout: React.FC = () => {
       email: null
     })
 
-    setTimeout(() => navigate("/login"), 2000)
+    setTimeout(() => navigate("/login"), 4000)
   }, [])
   
   return (
-    <>
-      <Alert className="text-emerald-600">
+    <div className="w-full h-full lg:h-auto lg:w-2/3 2xl:w-2/5 border p-4 lg:shadow-lg lg:rounded-lg flex items-start bg-white">
+       <Alert className="text-emerald-600">
         <AlertTitle className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/> See you soon!</AlertTitle>
         <AlertDescription >You log out correctly</AlertDescription>
       </Alert>
-    </>
+    </div>
   )
 }
 

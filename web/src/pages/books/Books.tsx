@@ -12,9 +12,9 @@ type BookListResponse = Book[]
 const Books: React.FC = () => {
 
   return (
-    <>
+    <div>
       <h1>BOOKS</h1>
-    </>
+    </div>
   )
 }
 

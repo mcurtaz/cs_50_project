@@ -1,5 +1,3 @@
-import { redirect } from "react-router-dom"
-
 import axios, {AxiosError} from "axios"
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
@@ -22,9 +20,7 @@ export const verifyToken = async (): Promise<boolean> => {
 
     const difference = (expiration.getTime() - now.getTime()) / 1000;
 
-    console.log(access_token_expiration, expiration, now, difference)
-
-    if(true || difference < 120){
+    if(difference < 120){
         try {
           let response = await axios.post<RefreshResponse>(
             BASE_URL + "refresh",
