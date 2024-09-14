@@ -8,9 +8,10 @@ import { CircleAlert } from 'lucide-react';
 import axios, {AxiosError} from "axios"
 
 import { useEffect, useState, useContext } from "react"
-import { Form, useNavigation, useActionData, useNavigate, Link } from "react-router-dom"
+import { Form, useNavigation, useActionData, useNavigate, Link, json } from "react-router-dom"
 
 import { UserContext } from "@/store/UserContext";
+import getErrorsMessage from "@/utils/getErrorsMessage";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
@@ -24,10 +25,8 @@ type LoginResponse = {
 }
 
 type actionReponse = {
-  isError: boolean,
   response?: LoginResponse,
-  errors?: string[],
-  status: number
+  errors?: string[]
 }
 
 const Login: React.FC = () => {
@@ -46,9 +45,9 @@ const Login: React.FC = () => {
     if(!data){
       setErrors([]);
       if(user.isLogged) navigate("/home")
-    }else if(data.isError && data.errors){
+    }else if(data && data.errors){
       setErrors(data.errors);
-    }else if(!data.isError && data.response){
+    }else if(data.response){
       setErrors([]);
       sessionStorage.setItem("access_token", data.response?.access_token)
       sessionStorage.setItem("refresh_token", data.response?.refresh_token)
@@ -105,8 +104,6 @@ export const submitLogin = async ({request}: {request: Request}) => {
     password: formData.get("password")
   }
 
-  let errors: string[] = [];
-
   try {
     let response = await axios.post<LoginResponse>(
       BASE_URL + "login", 
@@ -120,35 +117,15 @@ export const submitLogin = async ({request}: {request: Request}) => {
       }
     )
 
-    return {
-      isError: false,
-      status: 200,
+    return json({
       response: response.data
-    }
+    }, {status: 200});
 
   } catch (error: unknown | AxiosError) {
-    if (axios.isAxiosError(error))  {
-      // Access to config, request, and response
-      if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
-        Object.values(error.response.data.errors.json).forEach(err =>{
-          if(Array.isArray(err) && typeof err[0] == "string"){
-            errors.push(err[0])
-          }
-        })
-      }else if(error.response?.status == 401){ // wrong credentials
-        errors.push(error.response?.data.message)
-      }else{
-        errors.push(error.message)
-      }
-    } else {
-      // Just a stock error
-      errors.push("Ops, something gone wrong. Please retry later!")
-    }
+    const errors = getErrorsMessage(error);
 
-    return {
-      isError: true,
-      status: axios.isAxiosError(error) ? error.response?.status : 500,
-      errors: errors
-    }
+    return json({
+      errors
+    }, {status: 200});
   }
 }

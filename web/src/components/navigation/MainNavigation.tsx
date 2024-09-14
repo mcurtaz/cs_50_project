@@ -18,7 +18,7 @@ const MainNavigation: React.FC = () => {
 
     return (
         <div className="w-full h-full border-slate-950 bg-white lg:h-5/6 lg:border lg:shadow-lg lg:rounded-lg lg:w-4/6 flex flex-col-reverse justify-stretch lg:flex-row">
-            <nav className="p-3 border-t lg:p-6 border-sky-950 lg:border-r lg:border-t-0">
+            <nav className="h-20 lg:h-full p-3 border-t lg:p-6 border-sky-950 lg:border-r lg:border-t-0">
                 <ul className="flex flex-row justify-around lg:flex-col lg:h-full lg:justify-start">
                     <li>
                         <NavLink 
@@ -55,7 +55,7 @@ const MainNavigation: React.FC = () => {
                     </li>
                 </ul>
             </nav>
-            <div className="flex-grow p-3 lg:p-6">
+            <div className="w-full h-[calc(100%_-_5rem)] lg:h-full p-3 lg:p-6">
                 <Outlet />
             </div>
         </div>

@@ -1,5 +1,6 @@
-import { redirect, json, useNavigate } from "react-router-dom";
+import { redirect, json, useNavigate, useLoaderData } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus } from "lucide-react";
 
 import axios, {AxiosError} from "axios"
@@ -9,15 +10,25 @@ const BASE_URL = import.meta.env.VITE_API_BASEURL;
 import { verifyToken } from "@/utils/verifyToken";
 import { Book } from "@/models/book.model";
 
+import getErrorsMessage from "@/utils/getErrorsMessage";
+
+import BookCard from "@/components/book/BookCard";
+
 type BookListResponse = Book[]
 
 const BookList: React.FC = () => {
   const navigate = useNavigate();
-
+  const books = useLoaderData() as BookListResponse;
+  
   return (
     <div className="w-full h-full flex flex-col">
       <h1 className="text-center text-3xl font-semibold">BOOKS</h1>
-      <div className="relative flex-grow">
+      <div className="w-full flex-grow relative overflow-hidden">
+        <ScrollArea className="w-full h-full">
+          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-10">
+            {books.map(book => <BookCard key={book.id} book={book} />)}
+          </div>
+        </ScrollArea>
         <div className="absolute bottom-4 right-4">
           <Button onClick={()=> {navigate("/book/add")}} size="icon">
             <Plus className="h-5 w-5" />
@@ -39,8 +50,6 @@ export const fetchBookList = async () =>{
 
   const access_token = sessionStorage.getItem("access_token");
 
-  let errors: string[] = [];
-
   try {
     let response = await axios.get<BookListResponse>(
       BASE_URL + "book", 
@@ -57,22 +66,8 @@ export const fetchBookList = async () =>{
     return json(response.data, { status: 200 });
 
   } catch (error: unknown | AxiosError) {  
-    if (axios.isAxiosError(error))  {
-      // Access to config, request, and response
-      if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
-        Object.values(error.response.data.errors.json).forEach(err =>{
-          if(Array.isArray(err) && typeof err[0] == "string"){
-            errors.push(err[0])
-          }
-        })
-      }else if(error.response?.status == 401){ // wrong credentials
-        errors.push(error.response?.data.message)
-      }
-    } else {
-      // Just a stock error
-      errors.push("Ops, something gone wrong. Please retry later!")
-    }
+    const errors = getErrorsMessage(error);
 
-    return json({errors}, { status: axios.isAxiosError(error) ? error.response?.status : 500 });
+    throw json({errors}, { status: axios.isAxiosError(error) ? error.response?.status : 500 });
   }
 }

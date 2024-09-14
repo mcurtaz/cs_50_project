@@ -8,7 +8,8 @@ import { CircleAlert } from 'lucide-react';
 import axios, {AxiosError} from "axios"
 
 import { useEffect, useState, useContext } from "react"
-import { Form, useNavigation, useActionData, useNavigate, Link } from "react-router-dom"
+import { Form, useNavigation, useActionData, useNavigate, Link, json } from "react-router-dom"
+import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import { UserContext } from "@/store/UserContext";
 
@@ -19,10 +20,8 @@ type RegisterResponse = {
 }
 
 type actionReponse = {
-  isError: boolean,
   response?: RegisterResponse,
   errors?: string[],
-  status: number
 }
 
 const Register: React.FC = () => {
@@ -42,9 +41,9 @@ const Register: React.FC = () => {
     if(!data){
       setErrors([]);
       if(user.isLogged) navigate("/home")
-    }else if(data.isError && data.errors){
+    }else if(data.errors){
       setErrors(data.errors);
-    }else if(!data.isError && data.response){
+    }else if(data.response){
       setErrors([]);
 
       setSuccess(true);
@@ -116,35 +115,15 @@ export const submitRegister = async ({request}: {request: Request}) => {
       }
     )
 
-    return {
-      isError: false,
-      status: 200,
+    return json({
       response: response.data
-    }
+    }, {status: 200});
 
   } catch (error: unknown | AxiosError) {
-    if (axios.isAxiosError(error))  {
-      // Access to config, request, and response
-      if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
-        Object.values(error.response.data.errors.json).forEach(err =>{
-          if(Array.isArray(err) && typeof err[0] == "string"){
-            errors.push(err[0])
-          }
-        })
-      }else if(error.response?.data?.message){
-        errors.push(error.response?.data.message)
-      }else{
-        errors.push(error.message)
-      }
-    } else {
-      // Just a stock error
-      errors.push("Ops, something gone wrong. Please retry later!")
-    }
+    const errors = getErrorsMessage(error);
 
-    return {
-      isError: true,
-      status: axios.isAxiosError(error) ? error.response?.status : 500,
-      errors: errors
-    }
+    return json({
+      errors
+    }, {status: 200});
   }
 }

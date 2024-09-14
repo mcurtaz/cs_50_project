@@ -12,23 +12,23 @@ import {
 } from "@/components/ui/select"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-import { Book, CircleAlert } from 'lucide-react';
+import { Book, CircleAlert, ChevronLeft } from 'lucide-react';
 
 import { verifyToken } from "@/utils/verifyToken"
+import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import axios, {AxiosError} from "axios"
 
 import { useEffect, useState } from "react"
-import { Form, useNavigation, useActionData, useNavigate, redirect } from "react-router-dom"
+import { Form, useNavigation, useActionData, useNavigate, redirect, Link, json } from "react-router-dom"
 
 import Rating from "@/components/ui/rating"
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 type actionReponse = {
-  isError: boolean,
   errors?: string[],
-  status: number
+  response?: boolean
 }
 
 const BookAdd: React.FC = () => {
@@ -47,9 +47,9 @@ const BookAdd: React.FC = () => {
   useEffect(() => {
     if(!data){
       setErrors([]);
-    }else if(data.isError && data.errors){
+    }else if(data.errors){
       setErrors(data.errors);
-    }else if(!data.isError && data.status == 201){
+    }else if(data.response){
       setSuccess(true);
 
       setTimeout(() => navigate("/book"), 3000)
@@ -64,7 +64,12 @@ const BookAdd: React.FC = () => {
   
   return (
     <div className="w-full h-full flex flex-col">
-      <h1 className="text-center text-3xl font-semibold">ADD NEW BOOK</h1>
+      <div className="flex items-center">
+        <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">
+          <ChevronLeft size={32} />
+        </Link>
+        <h1 className="flex-grow text-center text-3xl font-semibold">ADD NEW BOOK</h1>
+      </div>
       <ScrollArea className="flex-grow pt-4">
         <Form className="flex flex-col items-center justify-center py-4" method="post">
             <img src={imageUrl.length > 0 ? imageUrl : "/book-placeholder.svg"} className="w-48 h-56 object-contain mb-8"/> 
@@ -142,8 +147,6 @@ export const submitBookAdd = async ({request}: {request: Request}) => {
     status: formData.get("status")
   }
 
-  let errors: string[] = [];
-
   try {
     let response = await axios.post(
       BASE_URL + "book", 
@@ -158,35 +161,13 @@ export const submitBookAdd = async ({request}: {request: Request}) => {
       }
     )
 
-    return {
-      isError: false,
-      status: 201,
-      response: response.data
-    }
+    return json({response: response.data },{status: 204})
 
   } catch (error: unknown | AxiosError) {
-    if (axios.isAxiosError(error))  {
-      // Access to config, request, and response
-      if(error.response?.status == 422 && error.response?.data?.errors?.json){ // validation error
-        Object.values(error.response.data.errors.json).forEach(err =>{
-          if(Array.isArray(err) && typeof err[0] == "string"){
-            errors.push(err[0])
-          }
-        })
-      }else if(error.response?.status == 401){ // wrong credentials
-        errors.push(error.response?.data.message)
-      }else{
-        errors.push(error.message)
-      }
-    } else {
-      // Just a stock error
-      errors.push("Ops, something gone wrong. Please retry later!")
-    }
+    const errors = getErrorsMessage(error);
 
-    return {
-      isError: true,
-      status: axios.isAxiosError(error) ? error.response?.status : 500,
-      errors: errors
-    }
+    return json({
+      errors
+    }, {status: 200});
   }
 }
