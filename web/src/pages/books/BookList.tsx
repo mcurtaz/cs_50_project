@@ -25,7 +25,7 @@ const BookList: React.FC = () => {
       <h1 className="text-center text-3xl font-semibold">BOOKS</h1>
       <div className="w-full flex-grow relative overflow-hidden">
         <ScrollArea className="w-full h-full">
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-10">
+          <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-10">
             {books.map(book => <BookCard key={book.id} book={book} />)}
           </div>
         </ScrollArea>

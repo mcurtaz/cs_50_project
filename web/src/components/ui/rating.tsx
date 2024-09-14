@@ -9,7 +9,7 @@ type RatingProps = {
 const Rating: React.FC<RatingProps> = ({ratingValue, onClick, size}) => {
     const values = [1,2,3,4,5];
 
-    let icon_size = size == "sm" ? 20 : 25;
+    let icon_size = size == "sm" ? 15 : 25;
 
     return (
         <div className="w-full flex items-center justify-between">

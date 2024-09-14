@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-import { Book, CircleAlert, ChevronLeft } from 'lucide-react';
+import { Book, CircleAlert, ArrowLeft } from 'lucide-react';
 
 import { verifyToken } from "@/utils/verifyToken"
 import getErrorsMessage from "@/utils/getErrorsMessage";
@@ -65,9 +65,12 @@ const BookAdd: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
-        <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">
+        <Button size={"sm_icon"} onClick={()=> navigate("/book")}>
+          <ArrowLeft size={22} />
+        </Button>
+        {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">
           <ChevronLeft size={32} />
-        </Link>
+        </Link> */}
         <h1 className="flex-grow text-center text-3xl font-semibold">ADD NEW BOOK</h1>
       </div>
       <ScrollArea className="flex-grow pt-4">
@@ -161,7 +164,7 @@ export const submitBookAdd = async ({request}: {request: Request}) => {
       }
     )
 
-    return json({response: response.data },{status: 204})
+    return json({response: response.data },{status: 201})
 
   } catch (error: unknown | AxiosError) {
     const errors = getErrorsMessage(error);
