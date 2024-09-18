@@ -59,7 +59,7 @@ const MainNavigation: React.FC = () => {
                 </ul>
             </nav>
             <div className="relative w-full h-[calc(100%_-_5rem)] lg:h-full p-3 lg:p-6">
-                {navigation.state === "loading" && <div className="absolute top-0 right-0 bg-gray-900/40 w-full h-full flex items-center justify-center"><LoaderCircle className="h-16 w-16 animate-spin text-pink-500"/></div>}
+                {/* {navigation.state === "loading" && <div className="absolute top-0 right-0 bg-gray-900/40 w-full h-full flex items-center justify-center"><LoaderCircle className="h-16 w-16 animate-spin text-pink-500"/></div>} */}
                 <Outlet />
             </div>
         </div>

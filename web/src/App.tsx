@@ -12,6 +12,7 @@ import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
 import Profile from './pages/profile/Profile'
+import BookEdit, {fetchBook, submitBookEdit} from './pages/books/BookEdit'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
         path: "/book/add", 
         element: <BookAdd/>,
         action: submitBookAdd
+      },
+      {
+        path: "/book/:bookId", 
+        element: <BookEdit/>,
+        loader: fetchBook,
+        action: submitBookEdit
       },
       {
         path: "/profile", 

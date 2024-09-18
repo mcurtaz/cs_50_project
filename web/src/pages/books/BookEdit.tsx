@@ -5,15 +5,19 @@ import { verifyToken } from "@/utils/verifyToken"
 import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import axios, {AxiosError} from "axios"
-import {useNavigate, redirect, json } from "react-router-dom"
+import {useNavigate, redirect, json, Params, useLoaderData, useParams } from "react-router-dom"
 
 import BookForm from "@/components/book/BookForm"
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
-const BookAdd: React.FC = () => {
+import { Book } from "@/models/book.model";
+type BookResponse = Book
+
+const BookEdit: React.FC = () => {
   const navigate = useNavigate();
-  
+  const book = useLoaderData() as BookResponse;
+
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
@@ -23,23 +27,56 @@ const BookAdd: React.FC = () => {
         {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">
           <ChevronLeft size={32} />
         </Link> */}
-        <h1 className="flex-grow text-center text-3xl font-semibold">ADD NEW BOOK</h1>
+        <h1 className="flex-grow text-center text-3xl font-semibold">EDIT BOOK</h1>
       </div>
       <BookForm 
-        book={null} 
+        book={book} 
         options={{
           redirect: "/book", 
-          success_message: "Book added successfully", 
-          button_label : "Add book"
+          success_message: "Book edited successfully", 
+          button_label : "Edit book"
         }}
       />
     </div> 
   )
 }
 
-export default BookAdd
+export default BookEdit;
 
-export const submitBookAdd = async ({request}: {request: Request}) => {
+export const fetchBook = async ({params}: {params: Params}) =>{
+    let is_token_valid = await verifyToken();
+
+    if(!is_token_valid){
+        return redirect("/logout");
+    }
+
+    const access_token = sessionStorage.getItem("access_token");
+
+    const bookId = params.bookId
+
+    try {
+        let response = await axios.get<BookResponse>(
+        BASE_URL + "book/" + bookId, 
+        {
+            headers: {
+            'Content-Type':'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Accept': "application/json",
+            'Authorization': 'Bearer ' + access_token
+            }
+        }
+        )
+
+        return json(response.data, { status: 200 });
+
+    } catch (error: unknown | AxiosError) {  
+        const errors = getErrorsMessage(error);
+
+        throw json({errors}, { status: axios.isAxiosError(error) ? error.response?.status : 500 });
+    }
+}
+
+export const submitBookEdit = async ({request, params}: {request: Request, params: Params}) => {
   let is_token_valid = await verifyToken();
 
   if(!is_token_valid){
@@ -49,6 +86,8 @@ export const submitBookAdd = async ({request}: {request: Request}) => {
   const access_token = sessionStorage.getItem("access_token");
 
   const formData = await request.formData();
+
+  const {bookId} = params;
 
   const data = {
     image_url: formData.get("image_url"),
@@ -60,8 +99,8 @@ export const submitBookAdd = async ({request}: {request: Request}) => {
   }
 
   try {
-    let response = await axios.post(
-      BASE_URL + "book", 
+    let response = await axios.put(
+      BASE_URL + "book/" + bookId, 
       data, 
       {
         headers: {
