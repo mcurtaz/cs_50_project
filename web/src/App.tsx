@@ -12,7 +12,7 @@ import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
 import Profile from './pages/profile/Profile'
-import BookEdit, {fetchBook, submitBookEdit} from './pages/books/BookEdit'
+import BookEdit, {fetchBook, submitBookAction} from './pages/books/BookEdit'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <Home/>
       },
       {
-        path: "/book", 
+        path: "/book",
         element: <BookList/>,
         loader: fetchBookList
       },
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         path: "/book/:bookId", 
         element: <BookEdit/>,
         loader: fetchBook,
-        action: submitBookEdit
+        action: submitBookAction
       },
       {
         path: "/profile", 

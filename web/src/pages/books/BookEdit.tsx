@@ -5,7 +5,7 @@ import { verifyToken } from "@/utils/verifyToken"
 import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import axios, {AxiosError} from "axios"
-import {useNavigate, redirect, json, Params, useLoaderData, useParams } from "react-router-dom"
+import {useNavigate, redirect, json, Params, useLoaderData } from "react-router-dom"
 
 import BookForm from "@/components/book/BookForm"
 
@@ -34,7 +34,8 @@ const BookEdit: React.FC = () => {
         options={{
           redirect: "/book", 
           success_message: "Book edited successfully", 
-          button_label : "Edit book"
+          button_label : "Edit book",
+          method: "put"
         }}
       />
     </div> 
@@ -76,7 +77,8 @@ export const fetchBook = async ({params}: {params: Params}) =>{
     }
 }
 
-export const submitBookEdit = async ({request, params}: {request: Request, params: Params}) => {
+export const submitBookAction = async ({request, params}: {request: Request, params: Params}) => {
+  console.log(request)
   let is_token_valid = await verifyToken();
 
   if(!is_token_valid){
@@ -89,36 +91,63 @@ export const submitBookEdit = async ({request, params}: {request: Request, param
 
   const {bookId} = params;
 
-  const data = {
-    image_url: formData.get("image_url"),
-    title: formData.get("title"),
-    description: formData.get("description"),
-    author: formData.get("author"),
-    rating: formData.get("rating"),
-    status: formData.get("status")
+  if(request.method === "PUT"){ // UPDATE BOOK
+    const data = {
+      image_url: formData.get("image_url"),
+      title: formData.get("title"),
+      description: formData.get("description"),
+      author: formData.get("author"),
+      rating: formData.get("rating"),
+      status: formData.get("status")
+    }
+  
+    try {
+      let response = await axios.put(
+        BASE_URL + "book/" + bookId, 
+        data, 
+        {
+          headers: {
+            'Content-Type':'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Accept': "application/json",
+            'Authorization': 'Bearer ' + access_token
+          }
+        }
+      )
+  
+      return json({response: response.data },{status: 201})
+  
+    } catch (error: unknown | AxiosError) {
+      const errors = getErrorsMessage(error);
+  
+      return json({
+        errors
+      }, {status: 200});
+    }
   }
 
-  try {
-    let response = await axios.put(
-      BASE_URL + "book/" + bookId, 
-      data, 
-      {
-        headers: {
-          'Content-Type':'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Accept': "application/json",
-          'Authorization': 'Bearer ' + access_token
+  if(request.method === "DELETE"){ // DELETE BOOK
+    try {
+      await axios.delete(
+        BASE_URL + "book/" + bookId,
+        {
+          headers: {
+            'Content-Type':'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Accept': "application/json",
+            'Authorization': 'Bearer ' + access_token
+          }
         }
-      }
-    )
-
-    return json({response: response.data },{status: 201})
-
-  } catch (error: unknown | AxiosError) {
-    const errors = getErrorsMessage(error);
-
-    return json({
-      errors
-    }, {status: 200});
+      )
+  
+      return redirect("/book")
+  
+    } catch (error: unknown | AxiosError) {
+      const errors = getErrorsMessage(error);
+  
+      return json({
+        errors
+      }, {status: 200});
+    }
   }
 }

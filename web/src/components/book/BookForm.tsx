@@ -15,18 +15,17 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Book, CircleAlert } from 'lucide-react';
 
 import { useEffect, useState } from "react"
-import { Form, useNavigation, useActionData, useNavigate } from "react-router-dom"
+import { Form, useNavigation, useActionData, useNavigate, FormMethod } from "react-router-dom"
 
 import Rating from "@/components/ui/rating"
 import { Book as BookModel } from "@/models/book.model";
-import { title } from "process"
 
 type actionReponse = {
   errors?: string[],
   response?: boolean
 }
 
-const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, success_message: string, button_label : string}}> = ({book, options}) => {
+const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, success_message: string, button_label : string, method: FormMethod}}> = ({book, options}) => {
     const [errors, setErrors] = useState<string[]>([]);
     const [isSuccess, setIsSuccess] = useState(false);
     const [imageUrl, setImageUrl] = useState(book?.image_url ? book.image_url : "");
@@ -59,7 +58,7 @@ const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, su
 
     return (
         <ScrollArea className="flex-grow pt-4">
-            <Form className="flex flex-col items-center justify-center py-4" method="post">
+            <Form className="flex flex-col items-center justify-center py-4" method={options.method}>
                 <Input type="hidden" name="id" value={book?.id ?? undefined}/>
 
                 <img src={imageUrl.length > 0 ? imageUrl : "/book-placeholder.svg"} className="w-48 h-56 object-contain mb-8"/> 

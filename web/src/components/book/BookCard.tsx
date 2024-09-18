@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { Book } from "@/models/book.model";
 import {
   Card,
@@ -17,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
   
 
-const BookCard: React.FC<{book: Book}> = ({book}) => {
+const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null | Book>>}> = ({book, setToDelete}) => {
   const { image_url, title, author, rating } = book;
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const BookCard: React.FC<{book: Book}> = ({book}) => {
           <Button onClick={()=> {navigate("/book/" + book.id)}} size="sm_icon">
             <Edit className="h-4 w-4" />
           </Button>
-          <Button className="ml-2" variant={"destructive"} onClick={()=> {navigate("/book/add")}} size="sm_icon">
+          <Button className="ml-2" variant={"destructive"} onClick={()=> {setToDelete(book)}} size="sm_icon">
             <Trash className="h-4 w-4" />
           </Button>
         </div>

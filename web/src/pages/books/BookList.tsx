@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { redirect, json, useNavigate, useLoaderData } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,12 +14,15 @@ import { Book } from "@/models/book.model";
 import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import BookCard from "@/components/book/BookCard";
+import BookDeleteModal from "@/components/book/BookDeleteModal";
 
 type BookListResponse = Book[]
 
 const BookList: React.FC = () => {
   const navigate = useNavigate();
   const books = useLoaderData() as BookListResponse;
+
+  const [toDelete, setToDelete] = useState<null | Book>(null);
   
   return (
     <div className="w-full h-full flex flex-col">
@@ -26,7 +30,7 @@ const BookList: React.FC = () => {
       <div className="w-full flex-grow relative overflow-hidden">
         <ScrollArea className="w-full h-full">
           <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-10">
-            {books.map(book => <BookCard key={book.id} book={book} />)}
+            {books.map(book => <BookCard key={book.id} book={book} setToDelete={setToDelete} />)}
           </div>
         </ScrollArea>
         <div className="absolute bottom-4 right-4">
@@ -35,6 +39,7 @@ const BookList: React.FC = () => {
           </Button>
         </div>
       </div>
+      <BookDeleteModal toDelete={toDelete} setToDelete={setToDelete}/>
     </div>
   )
 }

@@ -30,7 +30,8 @@ const BookAdd: React.FC = () => {
         options={{
           redirect: "/book", 
           success_message: "Book added successfully", 
-          button_label : "Add book"
+          button_label : "Add book",
+          method: "post"
         }}
       />
     </div> 
