@@ -73,7 +73,7 @@ export const fetchBook = async ({params}: {params: Params}) =>{
     } catch (error: unknown | AxiosError) {  
         const errors = getErrorsMessage(error);
 
-        throw json({errors}, { status: axios.isAxiosError(error) ? error.response?.status : 500 });
+        throw json({message: errors[0], errors: errors}, { status: axios.isAxiosError(error) ? error.response?.status : 500 });
     }
 }
 

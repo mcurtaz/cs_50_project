@@ -16,8 +16,8 @@ export default function getErrorsMessage(error: unknown | AxiosError): string[]{
             errors.push(error.message)
         }
     } else {
-    // Just a stock error
-    errors.push("Ops, something gone wrong. Please retry later!")
+        // Just a stock error
+        errors.push("An error occurred. Please retry later!")
     }
 
     return errors;

@@ -13,11 +13,13 @@ import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
 import Profile from './pages/profile/Profile'
 import BookEdit, {fetchBook, submitBookAction} from './pages/books/BookEdit'
+import ErrorPage from './pages/error/ErrorPage'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainNavigation />,
+    errorElement: <ErrorPage />,
     children: [
       // {
       //   index: true,

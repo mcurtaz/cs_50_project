@@ -31,7 +31,7 @@ const BookDeleteModal: React.FC<{toDelete: Book | null, setToDelete: Dispatch<Se
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action will delete {toDelete?.title}
+                This action will delete "{toDelete?.title}" permanently
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
