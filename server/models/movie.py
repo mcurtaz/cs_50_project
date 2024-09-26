@@ -1,5 +1,6 @@
 import enum
 from db import db
+from sqlalchemy.sql import func
 
 class MovieStatusEnum(enum.Enum):
     TO_WATCH = "to_watch"
@@ -18,5 +19,6 @@ class MovieModel(db.Model):
     rating = db.Column(db.SmallInteger(), nullable=True)
     status = db.Column(db.Enum(MovieStatusEnum))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique=False, nullable=False)
+    creation_time = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     user = db.relationship("UserModel", back_populates="movies")

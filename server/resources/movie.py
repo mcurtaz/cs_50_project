@@ -10,17 +10,36 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from models import MovieModel
 from models import UserModel
-from schemas import MovieSchema, MoviePutSchema, PlainMovieSchema
+from schemas import MovieSchema, MoviePutSchema, PlainMovieSchema, PaginationSchema, MovieList
 
 blp = Blueprint("Movies", __name__, description="Operations on movies")
 
 @blp.route("/movie")
 class MovieList(MethodView):
 	@jwt_required()
-	@blp.response(200, PlainMovieSchema(many=True))
-	def get(self):
+	@blp.arguments(PaginationSchema, location="query")
+	@blp.response(200, MovieList)
+	def get(self, request_data):
+
+		if not "page" in request_data:
+			page = 1
+		else:
+			page = request_data["page"]
+		
+		per_page = 10
+
 		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
-		return user.movies.all()
+		movieList = user.movies.paginate(page=page,per_page=per_page,error_out=False)
+
+		return {
+			"pagination": {
+				"page": movieList.page,
+				"has_prev": movieList.has_prev,
+				"has_next": movieList.has_next,
+				"pages":movieList.pages
+			},
+			"movies": movieList
+		}
 
 	@jwt_required() 
 	@blp.arguments(MovieSchema)  

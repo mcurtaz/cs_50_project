@@ -10,17 +10,36 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from models import BookModel
 from models import UserModel
-from schemas import BookSchema, BookPutSchema, PlainBookSchema
+from schemas import BookSchema, BookPutSchema, PlainBookSchema, PaginationSchema, BookList
 
 blp = Blueprint("Books", __name__, description="Operations on books")
 
 @blp.route("/book")
 class BookList(MethodView):
 	@jwt_required()
-	@blp.response(200, PlainBookSchema(many=True))
-	def get(self):
+	@blp.arguments(PaginationSchema, location="query")
+	@blp.response(200, BookList())
+	def get(self, request_data):
+		
+		if not "page" in request_data:
+			page = 1
+		else:
+			page = request_data["page"]
+		
+		per_page = 10
+		
 		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
-		return user.books.all()
+		booklist = user.books.paginate(page=page,per_page=per_page,error_out=False)
+		
+		return {
+			"pagination": {
+				"page": booklist.page,
+				"has_prev": booklist.has_prev,
+				"has_next": booklist.has_next,
+				"pages":booklist.pages
+			},
+			"books": booklist
+		}
 
 	@jwt_required() 
 	@blp.arguments(BookSchema)  
