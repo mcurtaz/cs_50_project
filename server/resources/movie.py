@@ -6,19 +6,20 @@ from flask_jwt_extended import (
 )
 
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql.expression import func
 
 from db import db
 from models import MovieModel
 from models import UserModel
-from schemas import MovieSchema, MoviePutSchema, PlainMovieSchema, PaginationSchema, MovieList
+from schemas import MovieSchema, MoviePutSchema, PlainMovieSchema, MovieListRequestSchema, MovieListSchema
 
 blp = Blueprint("Movies", __name__, description="Operations on movies")
 
 @blp.route("/movie")
 class MovieList(MethodView):
 	@jwt_required()
-	@blp.arguments(PaginationSchema, location="query")
-	@blp.response(200, MovieList)
+	@blp.arguments(MovieListRequestSchema, location="query")
+	@blp.response(200, MovieListSchema)
 	def get(self, request_data):
 
 		if not "page" in request_data:
@@ -29,14 +30,20 @@ class MovieList(MethodView):
 		per_page = 10
 
 		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
-		movieList = user.movies.paginate(page=page,per_page=per_page,error_out=False)
+		
+		query = user.movies
+
+		if "status" in request_data:
+			query = query.filter_by(status=request_data["status"])
+		
+		movieList = user.movies.order_by(MovieModel.title).paginate(page=page,per_page=per_page,error_out=False)
 
 		return {
 			"pagination": {
 				"page": movieList.page,
 				"has_prev": movieList.has_prev,
 				"has_next": movieList.has_next,
-				"pages":movieList.pages
+				"pages": movieList.pages
 			},
 			"movies": movieList
 		}
@@ -55,6 +62,17 @@ class MovieList(MethodView):
 		
 		return movie
 
+@blp.route("/movie/dashboard")
+class MovieDashboard(MethodView):
+	@jwt_required()
+	@blp.response(200, PlainMovieSchema(many=True))
+	def get(self):
+
+		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
+		movies = user.movies.order_by(func.random()).limit(5).all()
+
+		return movies
+	
 @blp.route("/movie/<string:movie_id>")
 class Movie(MethodView):
 	@jwt_required()
@@ -64,6 +82,10 @@ class Movie(MethodView):
 			abort(400, message="Missing movie id")
 
 		movie = MovieModel.query.filter_by(id=movie_id).one_or_404()
+
+		if movie and movie.user_id != get_jwt_identity():
+			abort(403, message="Insufficient permissions to access the resource")
+
 		return movie
 
 	@jwt_required()

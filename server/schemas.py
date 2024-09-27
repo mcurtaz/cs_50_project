@@ -65,10 +65,16 @@ class PaginationSchema(Schema):
     has_next = fields.Bool(dump_only=True)
     pages = fields.Int(dump_only=True)
 
-class BookList(Schema):
+class BookListSchema(Schema):
     pagination = fields.Nested(PaginationSchema())
     books = fields.List(fields.Nested(PlainBookSchema()))
 
-class MovieList(Schema):
+class MovieListSchema(Schema):
     pagination = fields.Nested(PaginationSchema())
     movies = fields.List(fields.Nested(PlainMovieSchema()))
+
+class BookListRequestSchema(PaginationSchema):
+    status = fields.Enum(enum=BookStatusEnum, by_value=False)
+
+class MovieListRequestSchema(PaginationSchema):
+    status = fields.Enum(enum=MovieStatusEnum, by_value=False)

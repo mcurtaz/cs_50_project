@@ -6,19 +6,20 @@ from flask_jwt_extended import (
 )
 
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql.expression import func
 
 from db import db
 from models import BookModel
 from models import UserModel
-from schemas import BookSchema, BookPutSchema, PlainBookSchema, PaginationSchema, BookList
+from schemas import BookSchema, BookPutSchema, PlainBookSchema, BookListSchema, BookListRequestSchema
 
 blp = Blueprint("Books", __name__, description="Operations on books")
 
 @blp.route("/book")
 class BookList(MethodView):
 	@jwt_required()
-	@blp.arguments(PaginationSchema, location="query")
-	@blp.response(200, BookList())
+	@blp.arguments(BookListRequestSchema, location="query")
+	@blp.response(200, BookListSchema())
 	def get(self, request_data):
 		
 		if not "page" in request_data:
@@ -29,7 +30,13 @@ class BookList(MethodView):
 		per_page = 10
 		
 		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
-		booklist = user.books.paginate(page=page,per_page=per_page,error_out=False)
+
+		query = user.books
+
+		if "status" in request_data:
+			query = query.filter_by(status=request_data["status"])
+		
+		booklist = query.order_by(BookModel.title).paginate(page=page,per_page=per_page,error_out=False)
 		
 		return {
 			"pagination": {
@@ -55,6 +62,17 @@ class BookList(MethodView):
 		
 		return book
 
+@blp.route("/book/dashboard")
+class BookDashboard(MethodView):
+	@jwt_required()
+	@blp.response(200, PlainBookSchema(many=True))
+	def get(self):
+
+		user = UserModel.query.filter_by(id=get_jwt_identity()).one_or_404()
+		books = user.books.order_by(func.random()).limit(5).all()
+
+		return books
+	
 @blp.route("/book/<string:book_id>")
 class Book(MethodView):
 	@jwt_required()
@@ -64,6 +82,10 @@ class Book(MethodView):
 			abort(400, message="Missing book id")
 
 		book = BookModel.query.filter_by(id=book_id).one_or_404()
+
+		if book and book.user_id != get_jwt_identity():
+			abort(403, message="Insufficient permissions to access the resource")
+
 		return book
 
 	@jwt_required()
