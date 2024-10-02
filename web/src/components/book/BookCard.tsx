@@ -23,10 +23,16 @@ const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null 
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-gray-100">
+    <Card className="bg-white-100">
       <CardHeader>
         <div className="w-full flex justify-center">
-          <img src={image_url ? image_url : "/book-placeholder.svg"} className="w-full object-contain rounded-md mb-3"/> 
+          <img 
+            src={image_url ? image_url : "/book-placeholder.svg"} 
+            onError={({ currentTarget })=> {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src="/book-placeholder.svg";
+            }} 
+            className="w-full object-contain rounded-md mb-3"/> 
         </div>
       </CardHeader>
       <CardContent>
@@ -35,7 +41,7 @@ const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null 
       </CardContent>
       <CardFooter>
         <div className="w-20">
-          <Rating ratingValue={rating} onClick={()=>{}} size="sm"/>
+          <Rating ratingValue={rating} onClick={()=>{}} size="sm" readonly={true}/>
         </div>
         <div className="flex flex-row items-center justify-end mt-2">
           <Button onClick={()=> {navigate("/book/" + book.id)}} size="sm_icon">

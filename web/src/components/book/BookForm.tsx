@@ -61,7 +61,13 @@ const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, su
             <Form className="flex flex-col items-center justify-center py-4" method={options.method}>
                 <Input type="hidden" name="id" value={book?.id ?? undefined}/>
 
-                <img src={imageUrl.length > 0 ? imageUrl : "/book-placeholder.svg"} className="w-48 h-56 object-contain mb-8"/> 
+                <img 
+                    src={imageUrl.length > 0 ? imageUrl : "/book-placeholder.svg"} 
+                    onError={({ currentTarget })=> {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src="/book-placeholder.svg";
+                    }} 
+                    className="w-48 h-56 object-contain mb-8"/> 
                 <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
                     <Label htmlFor="image_url">Image</Label>
                     <Input type="text" name="image_url" placeholder="Image url" defaultValue={imageUrl} onChange={handleImageUrl}/>

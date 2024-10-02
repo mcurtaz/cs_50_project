@@ -10,17 +10,21 @@ const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 import { verifyToken } from "@/utils/verifyToken";
 import { Book } from "@/models/book.model";
+import { Pagination as PaginationModel } from "@/models/pagination.model";
 
 import getErrorsMessage from "@/utils/getErrorsMessage";
 
 import BookCard from "@/components/book/BookCard";
 import BookDeleteModal from "@/components/book/BookDeleteModal";
+import Pagination from "@/components/navigation/Pagination";
 
-type BookListResponse = Book[]
-
+type BookListResponse = {
+  pagination: PaginationModel,
+  books: Book[]
+}
 const BookList: React.FC = () => {
   const navigate = useNavigate();
-  const books = useLoaderData() as BookListResponse;
+  const {books, pagination} = useLoaderData() as BookListResponse;
 
   const [toDelete, setToDelete] = useState<null | Book>(null);
   
@@ -39,6 +43,9 @@ const BookList: React.FC = () => {
           </Button>
         </div>
       </div>
+      <div className="flex flex-row items-center justify-center">
+        <Pagination pagination={pagination}/>
+      </div>
       <BookDeleteModal toDelete={toDelete} setToDelete={setToDelete}/>
     </div>
   )
@@ -46,7 +53,9 @@ const BookList: React.FC = () => {
 
 export default BookList;
 
-export const fetchBookList = async () =>{
+let abortController: AbortController;
+
+export const fetchBookList = async ({ request }: {request: Request}) =>{
   let is_token_valid = await verifyToken();
 
   if(!is_token_valid){
@@ -55,16 +64,26 @@ export const fetchBookList = async () =>{
 
   const access_token = sessionStorage.getItem("access_token");
 
+  if (abortController) {
+    abortController.abort();
+  }
+
+  abortController = new AbortController();
+
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  
   try {
     let response = await axios.get<BookListResponse>(
-      BASE_URL + "book", 
+      BASE_URL + "book" + "?" + searchParams.toString(), 
       {
         headers: {
           'Content-Type':'application/json',
           'Access-Control-Allow-Origin': '*',
           'Accept': "application/json",
           'Authorization': 'Bearer ' + access_token
-        }
+        },
+        signal: abortController.signal
       }
     )
 
