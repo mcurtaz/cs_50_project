@@ -1,6 +1,9 @@
 import enum
 from db import db
 from sqlalchemy.sql import func
+from sqlalchemy import desc, Index
+
+from ts_vector import TSVector
 
 
 class BookStatusEnum(enum.Enum):
@@ -24,3 +27,15 @@ class BookModel(db.Model):
     creation_time = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     user = db.relationship("UserModel", back_populates="books")
+
+    ts_book_vector = db.Column(
+        TSVector(),
+        db.Computed(
+            "to_tsvector('english', title || ' ' || description || ' ' || author)",
+            persisted=True
+        )
+    )
+
+    __table_args__ = (
+        Index('ix_book___ts_vector__', ts_book_vector, postgresql_using='gin'),
+    )

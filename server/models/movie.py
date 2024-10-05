@@ -1,6 +1,9 @@
 import enum
 from db import db
 from sqlalchemy.sql import func
+from sqlalchemy import desc, Index
+
+from ts_vector import TSVector
 
 class MovieStatusEnum(enum.Enum):
     TO_WATCH = "to_watch"
@@ -22,3 +25,15 @@ class MovieModel(db.Model):
     creation_time = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     user = db.relationship("UserModel", back_populates="movies")
+
+    ts_movie_vector = db.Column(
+        TSVector(),
+        db.Computed(
+            "to_tsvector('english', title || ' ' || description)",
+            persisted=True
+        )
+    )
+
+    __table_args__ = (
+        Index('ix_movie___ts_vector__', ts_movie_vector, postgresql_using='gin'),
+    )
