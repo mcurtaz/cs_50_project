@@ -16,7 +16,7 @@ const Rating: React.FC<RatingProps> = ({ratingValue, onClick, size, readonly}) =
         <div className="w-full flex items-center justify-between">
         {
             values.map(value => {
-                return <Star className={readonly === true ? "" : "hover:cursor-pointer"} key={value} size={icon_size} fill={ratingValue >= value ? "yellow" : ""} onClick={() => onClick(value == 1 && ratingValue == 1 ? 0 : value)}/>
+                return <Star className={readonly === true ? "" : "hover:cursor-pointer"} key={value} size={icon_size} fill={ratingValue >= value ? "yellow" : ""} onClick={() => onClick(value === ratingValue ? 0 : value)}/>
             })
         }
         </div>

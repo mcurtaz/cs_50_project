@@ -18,7 +18,7 @@ import { useEffect, useState } from "react"
 import { Form, useNavigation, useActionData, useNavigate, FormMethod } from "react-router-dom"
 
 import Rating from "@/components/ui/rating"
-import { Book as BookModel } from "@/models/book.model";
+import { Book as BookModel, BookStatus } from "@/models/book.model";
 
 type actionReponse = {
   errors?: string[],
@@ -91,11 +91,7 @@ const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, su
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="TO_READ">To read</SelectItem>
-                            <SelectItem value="READING">Reading</SelectItem>
-                            <SelectItem value="COMPLETED">Completed</SelectItem>
-                            <SelectItem value="ABANDONED">Abandoned</SelectItem>
-                            <SelectItem value="ON_HOLD">On hold</SelectItem>
+                            {Object.keys(BookStatus).map((key) => <SelectItem value={key}>{BookStatus[key as keyof typeof BookStatus]}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>

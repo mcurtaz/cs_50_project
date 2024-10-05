@@ -17,6 +17,7 @@ import getErrorsMessage from "@/utils/getErrorsMessage";
 import BookCard from "@/components/book/BookCard";
 import BookDeleteModal from "@/components/book/BookDeleteModal";
 import Pagination from "@/components/navigation/Pagination";
+import BookFilters from "@/components/book/BookFilters";
 
 type BookListResponse = {
   pagination: PaginationModel,
@@ -31,6 +32,9 @@ const BookList: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <h1 className="text-center text-3xl font-semibold">BOOKS</h1>
+      <div className="flex flex-row items-center justify-center">
+        <BookFilters />
+      </div>
       <div className="w-full flex-grow relative overflow-hidden">
         <ScrollArea className="w-full h-full">
           <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-10">
