@@ -40,15 +40,13 @@ const BookFilters: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-row gap-6 mt-5">
-        <div>
-            <Label htmlFor="status">Search</Label>
-            <Input type="text" name="search" onChange={setSearch} placeholder="Author/Description/Title" defaultValue={""}/>
+    <div className="w-full flex flex-row justify-end mt-5 gap-3">
+        <div className="lg:w-80">
+            <Input type="text" name="search" onChange={setSearch} placeholder="Search" defaultValue={""}/>
             <small className="text-gray-500 ml-1">Minimum 3 character</small>
         </div>
         <div>
-            <Label htmlFor="status">Status</Label>
-            <Select name="status" defaultValue={"all"} onValueChange={setStatus}>
+            <Select name="status" defaultValue={""} onValueChange={setStatus}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Status" />
                 </SelectTrigger>

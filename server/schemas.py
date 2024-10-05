@@ -75,6 +75,8 @@ class MovieListSchema(Schema):
 
 class BookListRequestSchema(PaginationSchema):
     status = fields.Enum(enum=BookStatusEnum, by_value=False)
+    q = fields.Str()
 
 class MovieListRequestSchema(PaginationSchema):
     status = fields.Enum(enum=MovieStatusEnum, by_value=False)
+    q = fields.Str()
