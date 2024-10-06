@@ -15,7 +15,7 @@ const BookAdd: React.FC = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col p-6">
       <div className="flex items-center">
         <Button size={"sm_icon"} onClick={()=> navigate("/book")}>
           <ArrowLeft size={22} />

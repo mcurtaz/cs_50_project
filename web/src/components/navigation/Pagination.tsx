@@ -13,11 +13,11 @@ const Pagination: React.FC<{
   const navigation = useNavigation();
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 pt-3">
         <Button disabled={!has_prev || navigation.state === "loading"} size={"sm_icon"} onClick={()=> setSearchParams((prev) => {return {...prev, page: page - 1}})}>
           <ArrowLeft size={22} />
         </Button>
-        <h4>{page}/{pages}</h4>
+        <h4>{pages === 0 ? 0 : page}/{pages}</h4>
         <Button disabled={!has_next || navigation.state === "loading"} size={"sm_icon"} onClick={()=> setSearchParams((prev) => {return {...prev, page: page + 1}})}>
           <ArrowRight size={22} />
         </Button>

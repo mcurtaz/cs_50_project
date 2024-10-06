@@ -30,14 +30,14 @@ const BookList: React.FC = () => {
   const [toDelete, setToDelete] = useState<null | Book>(null);
   
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
       <h1 className="text-center text-3xl font-semibold">BOOKS</h1>
       <div className="flex flex-row items-center justify-center">
         <BookFilters />
       </div>
       <div className="w-full flex-grow relative overflow-hidden">
         <ScrollArea className="w-full h-full">
-          <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-10">
+          <div className="p-6 gap-10 flex flex-row flex-wrap">
             {books.map(book => <BookCard key={book.id} book={book} setToDelete={setToDelete} />)}
           </div>
         </ScrollArea>

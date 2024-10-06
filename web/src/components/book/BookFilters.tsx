@@ -19,11 +19,13 @@ const BookFilters: React.FC = () => {
 
     if(value.length > 2){
         searchParams.set("q", value);
+        searchParams.set("page", "1");
         setSearchParams(searchParams);
     }else{
         searchParams.delete("q");
 
         if(old_value){
+            searchParams.set("page", "1");
             setSearchParams(searchParams);
         }
     }
@@ -35,6 +37,7 @@ const BookFilters: React.FC = () => {
     }else{
         searchParams.set("status", value);
     }
+    searchParams.set("page", "1");
     
     setSearchParams(searchParams);
   }
