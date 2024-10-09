@@ -16,6 +16,6 @@ services:
       - POSTGRES_PASSWORD=local_password
       - POSTGRES_DB=local_db  
     volumes:  
-      - postgres_data:/var/lib/postgresql/data  
+      - cs_50_postgres_data:/var/lib/postgresql/data  
 volumes:  
-  postgres_data:
+  cs_50_postgres_data:

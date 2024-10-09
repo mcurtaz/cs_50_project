@@ -31,7 +31,7 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('rating', sa.SmallInteger(), nullable=True),
-    sa.Column('status', sa.Enum('TO_WATCH', 'WATCHING', 'COMPLETED', 'ABANDONED', 'ON_HOLD', name='statusenum'), nullable=True),
+    sa.Column('status', sa.Enum('TO_WATCH', 'WATCHING', 'COMPLETED', 'ABANDONED', 'ON_HOLD', name='moviestatusenum'), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

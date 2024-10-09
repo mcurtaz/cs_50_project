@@ -12,6 +12,7 @@ from db import db
 from resources.user import blp as UserBlueprint
 from resources.movie import blp as MovieBlueprint
 from resources.book import blp as BookBlueprint
+from resources.series import blp as SeriesBlueprint
 
 def create_app(db_url=None):
     load_dotenv()
@@ -39,5 +40,6 @@ def create_app(db_url=None):
     api.register_blueprint(UserBlueprint, url_prefix='/api')
     api.register_blueprint(MovieBlueprint, url_prefix='/api')
     api.register_blueprint(BookBlueprint, url_prefix='/api')
+    api.register_blueprint(SeriesBlueprint, url_prefix='/api')
 
     return app

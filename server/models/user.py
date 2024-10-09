@@ -11,3 +11,4 @@ class UserModel(db.Model):
 
 	movies = db.relationship("MovieModel", back_populates="user", lazy="dynamic", cascade="all, delete")
 	books = db.relationship("BookModel", back_populates="user", lazy="dynamic", cascade="all, delete")
+	series = db.relationship("SeriesModel", back_populates="user", lazy="dynamic", cascade="all, delete")
