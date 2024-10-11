@@ -21,7 +21,7 @@ class MovieList(MethodView):
 	@blp.arguments(MovieListRequestSchema, location="query")
 	@blp.response(200, MovieListSchema)
 	def get(self, request_data):
-
+		print(request_data, flush=True)
 		if not "page" in request_data:
 			page = 1
 		else:
@@ -39,7 +39,7 @@ class MovieList(MethodView):
 		if "q" in request_data:
 			query = query.filter(MovieModel.ts_movie_vector.match(request_data["q"]))
 		
-		movieList = user.movies.order_by(MovieModel.title).paginate(page=page,per_page=per_page,error_out=False)
+		movieList = query.order_by(MovieModel.title).paginate(page=page,per_page=per_page,error_out=False)
 
 		return {
 			"pagination": {

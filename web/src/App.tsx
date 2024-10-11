@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './App.css'
 
@@ -8,11 +8,14 @@ import Login, { submitLogin } from "./pages/login/Login"
 import Register, { submitRegister } from "./pages/register/Register"
 import BookList, { fetchBookList } from './pages/books/BookList'
 import BookAdd, { submitBookAdd } from './pages/books/BookAdd'
+import BookEdit, {fetchBook, submitBookAction} from './pages/books/BookEdit'
+import MovieList, { fetchMovieList } from './pages/movies/MovieList'
+import MovieAdd, { submitMovieAdd } from './pages/movies/MovieAdd'
+import MovieEdit, {fetchMovie, submitMovieAction} from './pages/movies/MovieEdit'
 import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
 import Profile from './pages/profile/Profile'
-import BookEdit, {fetchBook, submitBookAction} from './pages/books/BookEdit'
 import ErrorPage from './pages/error/ErrorPage'
 
 const router = createBrowserRouter([
@@ -44,6 +47,22 @@ const router = createBrowserRouter([
         element: <BookEdit/>,
         loader: fetchBook,
         action: submitBookAction
+      },
+      {
+        path: "/movie",
+        element: <MovieList/>,
+        loader: fetchMovieList
+      },
+      {
+        path: "/movie/add", 
+        element: <MovieAdd/>,
+        action: submitMovieAdd
+      },
+      {
+        path: "/movie/:movieId", 
+        element: <MovieEdit/>,
+        loader: fetchMovie,
+        action: submitMovieAction
       },
       {
         path: "/profile", 

@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 
 import { UserContext } from "@/store/UserContext"
 
-import { BookOpenText, House, CircleUser, LoaderCircle } from 'lucide-react';
+import { BookOpenText, House, CircleUser, LoaderCircle, Film, TvMinimalPlay } from 'lucide-react';
 
 const MainNavigation: React.FC = () => {
     const navigate = useNavigate();
@@ -41,6 +41,30 @@ const MainNavigation: React.FC = () => {
                             <div className="flex flex-col items-center">
                                 <BookOpenText size={24}/>
                                 Books
+                            </div>
+                        </NavLink>
+                    </li>
+                    <li className="lg:mt-6">
+                        <NavLink 
+                            className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
+                            to="/movie"
+                            end
+                        >
+                            <div className="flex flex-col items-center">
+                                <Film size={24}/>
+                                Movies
+                            </div>
+                        </NavLink>
+                    </li>
+                    <li className="lg:mt-6">
+                        <NavLink 
+                            className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
+                            to="/series"
+                            end
+                        >
+                            <div className="flex flex-col items-center">
+                                <TvMinimalPlay size={24}/>
+                                Series
                             </div>
                         </NavLink>
                     </li>

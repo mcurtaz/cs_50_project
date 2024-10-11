@@ -7,9 +7,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { BookStatus } from "@/models/book.model";
+import { MovieStatus } from "@/models/movie.model";
 
-const BookFilters: React.FC = () => {
+const MovieFilters: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const setSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +54,7 @@ const BookFilters: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value={"all"} className="text-gray-300">All</SelectItem>
-                    {Object.keys(BookStatus).map((key) => <SelectItem value={key}>{BookStatus[key as keyof typeof BookStatus]}</SelectItem>)}
+                    {Object.keys(MovieStatus).map((key) => <SelectItem value={key}>{MovieStatus[key as keyof typeof MovieStatus]}</SelectItem>)}
                 </SelectContent>
             </Select>
         </div>
@@ -62,4 +62,4 @@ const BookFilters: React.FC = () => {
   )
 }
 
-export default BookFilters;
+export default MovieFilters;
