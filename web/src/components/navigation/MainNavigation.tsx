@@ -36,7 +36,6 @@ const MainNavigation: React.FC = () => {
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/book"
-                            end
                         >
                             <div className="flex flex-col items-center">
                                 <BookOpenText size={24}/>
@@ -48,7 +47,6 @@ const MainNavigation: React.FC = () => {
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/movie"
-                            end
                         >
                             <div className="flex flex-col items-center">
                                 <Film size={24}/>
@@ -60,7 +58,6 @@ const MainNavigation: React.FC = () => {
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/series"
-                            end
                         >
                             <div className="flex flex-col items-center">
                                 <TvMinimalPlay size={24}/>

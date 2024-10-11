@@ -12,6 +12,9 @@ import BookEdit, {fetchBook, submitBookAction} from './pages/books/BookEdit'
 import MovieList, { fetchMovieList } from './pages/movies/MovieList'
 import MovieAdd, { submitMovieAdd } from './pages/movies/MovieAdd'
 import MovieEdit, {fetchMovie, submitMovieAction} from './pages/movies/MovieEdit'
+import SeriesList, { fetchSeriesList } from './pages/series/SeriesList'
+import SeriesAdd, { submitSeriesAdd } from './pages/series/SeriesAdd'
+import SeriesEdit, {fetchSeries, submitSeriesAction} from './pages/series/SeriesEdit'
 import Home from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
@@ -63,6 +66,22 @@ const router = createBrowserRouter([
         element: <MovieEdit/>,
         loader: fetchMovie,
         action: submitMovieAction
+      },
+      {
+        path: "/series",
+        element: <SeriesList/>,
+        loader: fetchSeriesList
+      },
+      {
+        path: "/series/add", 
+        element: <SeriesAdd/>,
+        action: submitSeriesAdd
+      },
+      {
+        path: "/series/:seriesId", 
+        element: <SeriesEdit/>,
+        loader: fetchSeries,
+        action: submitSeriesAction
       },
       {
         path: "/profile", 

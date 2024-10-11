@@ -39,7 +39,7 @@ class SeriesList(MethodView):
 		if "q" in request_data:
 			query = query.filter(SeriesModel.ts_series_vector.match(request_data["q"]))
 		
-		seriesList = user.series.order_by(SeriesModel.title).paginate(page=page,per_page=per_page,error_out=False)
+		seriesList = query.order_by(SeriesModel.title).paginate(page=page,per_page=per_page,error_out=False)
 
 		return {
 			"pagination": {

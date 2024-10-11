@@ -7,30 +7,30 @@ import getErrorsMessage from "@/utils/getErrorsMessage";
 import axios, {AxiosError} from "axios"
 import {useNavigate, redirect, json } from "react-router-dom"
 
-import MovieForm from "@/components/movie/MovieForm";
+import SeriesForm from "@/components/series/SeriesForm";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
-const MovieAdd: React.FC = () => {
+const SeriesAdd: React.FC = () => {
   const navigate = useNavigate();
   
   return (
     <div className="w-full h-full flex flex-col p-6">
       <div className="flex items-center">
-        <Button size={"sm_icon"} onClick={()=> navigate("/movie")}>
+        <Button size={"sm_icon"} onClick={()=> navigate("/series")}>
           <ArrowLeft size={22} />
         </Button>
-        {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/movie">
+        {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">
           <ChevronLeft size={32} />
         </Link> */}
-        <h1 className="flex-grow text-center text-3xl font-semibold">ADD NEW MOVIE</h1>
+        <h1 className="flex-grow text-center text-3xl font-semibold">ADD NEW SERIES</h1>
       </div>
-      <MovieForm 
-        movie={null} 
+      <SeriesForm 
+        series={null} 
         options={{
-          redirect: "/movie", 
-          success_message: "Movie added successfully", 
-          button_label : "Add movie",
+          redirect: "/series", 
+          success_message: "Series added successfully", 
+          button_label : "Add Series",
           method: "post"
         }}
       />
@@ -38,9 +38,9 @@ const MovieAdd: React.FC = () => {
   )
 }
 
-export default MovieAdd
+export default SeriesAdd
 
-export const submitMovieAdd = async ({request}: {request: Request}) => {
+export const submitSeriesAdd = async ({request}: {request: Request}) => {
   let is_token_valid = await verifyToken();
 
   if(!is_token_valid){
@@ -61,7 +61,7 @@ export const submitMovieAdd = async ({request}: {request: Request}) => {
 
   try {
     let response = await axios.post(
-      BASE_URL + "movie", 
+      BASE_URL + "series", 
       data, 
       {
         headers: {
