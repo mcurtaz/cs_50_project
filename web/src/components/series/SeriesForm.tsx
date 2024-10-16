@@ -82,7 +82,7 @@ const SeriesForm: React.FC<{series: SeriesModel | null, options: {redirect: stri
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
                     <Label htmlFor="status">Status</Label>
-                    <Select name="status" defaultValue={series?.status && typeof series.status == "string" ?  series.status : "TO_READ"}>
+                    <Select name="status" defaultValue={series?.status && typeof series.status == "string" ?  series.status : "TO_WATCH"}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>

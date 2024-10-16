@@ -79,7 +79,7 @@ const Register: React.FC = () => {
           {success && (
               <Alert className="text-emerald-600">
                 <AlertTitle className="flex items-center"><CircleAlert className="h-4 w-4 mr-2"/> Account created successfully!</AlertTitle>
-                <AlertDescription >You can <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in</strong></Link>now.</AlertDescription>
+                <AlertDescription >You can <Link className="text-pink-500 hover:text-pink-900" to="/login"><strong>Log in</strong></Link> now.</AlertDescription>
               </Alert>
             )
           }

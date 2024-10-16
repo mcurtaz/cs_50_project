@@ -18,7 +18,7 @@ const MainNavigation: React.FC = () => {
 
     return (
         <div className="w-full h-full border-slate-950 bg-white lg:h-5/6 lg:border lg:shadow-lg lg:rounded-lg lg:w-4/6 flex flex-col-reverse justify-stretch lg:flex-row">
-            <nav className="h-20 lg:h-full p-3 border-t lg:p-6 border-sky-950 lg:border-r lg:border-t-0">
+            <nav className="h-20 w-full lg:h-full lg:w-20 p-3 border-t lg:p-6 border-sky-950 lg:border-r lg:border-t-0">
                 <ul className="flex flex-row justify-around lg:flex-col lg:h-full lg:justify-start">
                     <li>
                         <NavLink 
@@ -32,7 +32,7 @@ const MainNavigation: React.FC = () => {
                             </div>
                         </NavLink>
                     </li>
-                    <li className="lg:mt-6">
+                    <li className="lg:mt-8">
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/book"
@@ -43,7 +43,7 @@ const MainNavigation: React.FC = () => {
                             </div>
                         </NavLink>
                     </li>
-                    <li className="lg:mt-6">
+                    <li className="lg:mt-8">
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/movie"
@@ -54,7 +54,7 @@ const MainNavigation: React.FC = () => {
                             </div>
                         </NavLink>
                     </li>
-                    <li className="lg:mt-6">
+                    <li className="lg:mt-8">
                         <NavLink 
                             className={({isActive}) => isActive ? "text-pink-700" : "hover:text-pink-600/90"} 
                             to="/series"
@@ -79,7 +79,7 @@ const MainNavigation: React.FC = () => {
                     </li>
                 </ul>
             </nav>
-            <div className="relative w-full h-[calc(100%_-_5rem)] lg:h-full">
+            <div className="relative w-full h-[calc(100%_-_5rem)] lg:w-[calc(100%_-_5rem)] lg:h-full">
                 {navigation.state === "loading" && 
                     <div className="absolute top-0 right-0 z-50 w-full h-full flex items-center justify-center flex-col">
                         <div className="px-7 py-2 rounded-lg bg-gradient-to-b from-gray-800/30 to-white/10 text-center">

@@ -23,16 +23,16 @@ const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null 
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-white-100 w-64 h-96">
+    <Card className="bg-white-100 min-w-48 w-48 h-72 lg:min-w-64 lg:w-64 lg:h-96">
       <CardHeader>
-        <div className="w-full h-64 mb-3">
+        <div className="w-full h-40 lg:h-64 mb-3">
           <img 
             src={image_url ? image_url : "/book-placeholder.svg"} 
             onError={({ currentTarget })=> {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src="/book-placeholder.svg";
             }} 
-            className="w-full h-64 object-cover rounded-md"/> 
+            className="w-full h-40 lg:h-64 object-cover rounded-md"/> 
         </div>
       </CardHeader>
       <CardContent>

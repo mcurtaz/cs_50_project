@@ -21,16 +21,16 @@ const MovieCard: React.FC<{movie: Movie, setToDelete: Dispatch<SetStateAction<nu
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-white-100 w-64 h-96">
+    <Card className="bg-white-100 min-w-48 w-48 h-72 lg:min-w-64 lg:w-64 lg:h-96">
       <CardHeader>
-        <div className="w-full h-64 mb-3">
+        <div className="w-full h-40 lg:h-64 mb-3">
           <img 
             src={image_url ? image_url : "/movie-placeholder.svg"} 
             onError={({ currentTarget })=> {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src="/movie-placeholder.svg";
             }} 
-            className="w-full h-64 object-cover rounded-md"/> 
+            className="w-full h-40 lg:h-64 object-cover rounded-md"/> 
         </div>
       </CardHeader>
       <CardContent>
@@ -40,7 +40,7 @@ const MovieCard: React.FC<{movie: Movie, setToDelete: Dispatch<SetStateAction<nu
         <div className="w-20">
           <Rating ratingValue={rating} onClick={()=>{}} size="sm" readonly={true}/>
         </div>
-        <div className="flex flex-row items-center justify-end mt-2">
+        <div className="flex flex-row items-center justify-end mt-7">
           <Button onClick={()=> {navigate("/movie/" + movie.id)}} size="sm_icon">
             <Edit className="h-4 w-4" />
           </Button>

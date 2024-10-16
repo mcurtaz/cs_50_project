@@ -15,7 +15,7 @@ import MovieEdit, {fetchMovie, submitMovieAction} from './pages/movies/MovieEdit
 import SeriesList, { fetchSeriesList } from './pages/series/SeriesList'
 import SeriesAdd, { submitSeriesAdd } from './pages/series/SeriesAdd'
 import SeriesEdit, {fetchSeries, submitSeriesAction} from './pages/series/SeriesEdit'
-import Home from './pages/home/Home'
+import Home, { fetchDashboard } from './pages/home/Home'
 import MainNavigation from './components/navigation/MainNavigation'
 import Logout from './pages/logout/Logout'
 import Profile from './pages/profile/Profile'
@@ -33,7 +33,8 @@ const router = createBrowserRouter([
       // },
       {
         path: "/home", 
-        element: <Home/>
+        element: <Home/>,
+        loader: fetchDashboard
       },
       {
         path: "/book",

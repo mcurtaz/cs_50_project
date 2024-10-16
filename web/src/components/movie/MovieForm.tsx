@@ -82,7 +82,7 @@ const MovieForm: React.FC<{movie: MovieModel | null, options: {redirect: string,
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
                     <Label htmlFor="status">Status</Label>
-                    <Select name="status" defaultValue={movie?.status && typeof movie.status == "string" ?  movie.status : "TO_READ"}>
+                    <Select name="status" defaultValue={movie?.status && typeof movie.status == "string" ?  movie.status : "TO_WATCH"}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>
