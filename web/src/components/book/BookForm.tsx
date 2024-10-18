@@ -91,7 +91,7 @@ const BookForm: React.FC<{book: BookModel | null, options: {redirect: string, su
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
-                            {Object.keys(BookStatus).map((key) => <SelectItem value={key}>{BookStatus[key as keyof typeof BookStatus]}</SelectItem>)}
+                            {Object.keys(BookStatus).map((key) => <SelectItem key={key} value={key}>{BookStatus[key as keyof typeof BookStatus]}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>

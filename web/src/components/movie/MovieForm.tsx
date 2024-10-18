@@ -87,7 +87,7 @@ const MovieForm: React.FC<{movie: MovieModel | null, options: {redirect: string,
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
-                            {Object.keys(MovieStatus).map((key) => <SelectItem value={key}>{MovieStatus[key as keyof typeof MovieStatus]}</SelectItem>)}
+                            {Object.keys(MovieStatus).map((key) => <SelectItem key={key} value={key}>{MovieStatus[key as keyof typeof MovieStatus]}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>

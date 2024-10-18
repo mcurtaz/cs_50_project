@@ -17,7 +17,7 @@ const SeriesAdd: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col p-6">
       <div className="flex items-center">
-        <Button size={"sm_icon"} onClick={()=> navigate("/series")}>
+        <Button size={"sm_icon"} onClick={()=> navigate(-1)}>
           <ArrowLeft size={22} />
         </Button>
         {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">

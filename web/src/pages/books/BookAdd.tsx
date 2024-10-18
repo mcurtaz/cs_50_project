@@ -13,11 +13,11 @@ const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 const BookAdd: React.FC = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="w-full h-full flex flex-col p-6">
       <div className="flex items-center">
-        <Button size={"sm_icon"} onClick={()=> navigate("/book")}>
+        <Button size={"sm_icon"} onClick={()=> navigate(-1)}>
           <ArrowLeft size={22} />
         </Button>
         {/* <Link className="absolute text-pink-500 hover:text-pink-900" to="/book">

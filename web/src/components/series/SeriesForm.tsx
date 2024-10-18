@@ -87,7 +87,7 @@ const SeriesForm: React.FC<{series: SeriesModel | null, options: {redirect: stri
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
-                            {Object.keys(SeriesStatus).map((key) => <SelectItem value={key}>{SeriesStatus[key as keyof typeof SeriesStatus]}</SelectItem>)}
+                            {Object.keys(SeriesStatus).map((key) => <SelectItem key={key} value={key}>{SeriesStatus[key as keyof typeof SeriesStatus]}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>

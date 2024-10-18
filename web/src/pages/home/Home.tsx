@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Label } from "@radix-ui/react-label";
 import { Link } from "react-router-dom";
@@ -10,9 +11,12 @@ import { Movie as MovieModel} from "@/models/movie.model";
 import { Book as BookModel } from "@/models/book.model";
 import { Series as SeriesModel } from "@/models/series.model";
 
-import MovieCard from "@/components/movie/MovieCard";
 import BookCard from "@/components/book/BookCard";
+import MovieCard from "@/components/movie/MovieCard";
 import SeriesCard from "@/components/series/SeriesCard";
+import BookDeleteModal from "@/components/book/BookDeleteModal";
+import MovieDeleteModal from "@/components/movie/MovieDeleteModal";
+import SeriesDeleteModal from "@/components/series/SeriesDeleteModal";
 
 type BookDashboardResponse = BookModel[]
 type MovieDashboardResponse = MovieModel[]
@@ -28,45 +32,54 @@ const BASE_URL = import.meta.env.VITE_API_BASEURL;
 
 const Home: React.FC = () => {
   const {movies, books, series} = useLoaderData() as DashboardData;
+  const [bookToDelete, setBookToDelete] = useState<null | BookModel>(null);
+  const [movieToDelete, setMovieToDelete] = useState<null | MovieModel>(null);
+  const [seriesToDelete, setSeriesToDelete] = useState<null | SeriesModel>(null);
 
   return (
-    <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
-      <h1 className="text-center text-3xl font-semibold">THE ENJOY LIST</h1>
-      <div className="w-full flex-grow py-10 overflow-hidden">
-        <ScrollArea className="w-full h-full">
-          <div className="pb-10">
-            <div className="flex flex-row items-center justify-between p-2">
-              <Label className="font-bold">BOOKS</Label>
-              <Link className="text-pink-600" to={"/book"}>See all</Link>
-            </div>
-            <div className="min-h-20 flex flex-row gap-x-10 w-full">
-              {books.map(book => <BookCard key={book.id} book={book} setToDelete={()=>{}} />)}
-            </div>
-          </div>
-          <div className="pb-10">
-            <div className="flex flex-row items-center justify-between p-2">
-              <Label className="font-bold">MOVIES</Label>
-              <Link className="text-pink-600" to={"/movie"}>See all</Link>
-            </div>
-            <div className="min-h-20 flex flex-row gap-x-10">
-              {movies.map(movie => <MovieCard key={movie.id} movie={movie} setToDelete={()=>{}} />)}
-            </div>
-          </div>
-          <div className="pb-10">
-            <div className="flex flex-row items-center justify-between p-2">
-              <Label className="font-bold">SERIES</Label>
-              <Link className="text-pink-600" to={"/series"}>See all</Link>
-            </div>
-            <div className="min-h-20">
-              <div className="min-h-20 flex flex-row gap-x-10">
-                {series.map(item => <SeriesCard key={item.id} series={item} setToDelete={()=>{}} />)}
+    <>
+       <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
+        <h1 className="text-center text-3xl font-semibold">THE ENJOY LIST</h1>
+        <div className="w-full flex-grow py-10 overflow-hidden">
+          <ScrollArea className="w-full h-full">
+            <div className="pb-10">
+              <div className="flex flex-row items-center justify-between p-2">
+                <Label className="font-bold">BOOKS</Label>
+                <Link className="text-pink-600" to={"/book"}>See all</Link>
+              </div>
+              <div className="min-h-20 flex flex-row gap-x-10 w-full">
+                {books.map(book => <BookCard key={book.id} book={book} setToDelete={setBookToDelete} />)}
               </div>
             </div>
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+            <div className="pb-10">
+              <div className="flex flex-row items-center justify-between p-2">
+                <Label className="font-bold">MOVIES</Label>
+                <Link className="text-pink-600" to={"/movie"}>See all</Link>
+              </div>
+              <div className="min-h-20 flex flex-row gap-x-10">
+                {movies.map(movie => <MovieCard key={movie.id} movie={movie} setToDelete={setMovieToDelete} />)}
+              </div>
+            </div>
+            <div className="pb-10">
+              <div className="flex flex-row items-center justify-between p-2">
+                <Label className="font-bold">SERIES</Label>
+                <Link className="text-pink-600" to={"/series"}>See all</Link>
+              </div>
+              <div className="min-h-20">
+                <div className="min-h-20 flex flex-row gap-x-10">
+                  {series.map(item => <SeriesCard key={item.id} series={item} setToDelete={setSeriesToDelete} />)}
+                </div>
+              </div>
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div>
       </div>
-    </div>
+      <BookDeleteModal toDelete={bookToDelete} setToDelete={setBookToDelete}/>
+      <MovieDeleteModal toDelete={movieToDelete} setToDelete={setMovieToDelete}/>
+      <SeriesDeleteModal toDelete={seriesToDelete} setToDelete={setSeriesToDelete}/>
+    </>
+   
   )
 }
 
