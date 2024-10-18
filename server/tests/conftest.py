@@ -4,6 +4,7 @@ sys.path.append('../server')
 
 import pytest
 from flask_migrate import upgrade as flask_migrate_upgrade
+from sqlalchemy import text
 
 from flask_jwt_extended import (
     create_access_token
@@ -19,7 +20,7 @@ def set_env():
 
 @pytest.fixture(scope="session")
 def app():    
-    app = create_app("sqlite://")    
+    app = create_app("postgresql://postgres:mysecretpassword@localhost:5432/postgres")
     with app.app_context():
         yield app
 
@@ -33,9 +34,12 @@ def db(app, request):
 
     def teardown():
         _db.drop_all()
+        # Explicitly drop the alembic_version table
+        _db.session.execute(text('DROP TABLE IF EXISTS alembic_version'))
+        _db.session.commit()
     _db.app = app
 
-    flask_migrate_upgrade(directory="migrations")
+    flask_migrate_upgrade()
     request.addfinalizer(teardown)
     return _db
 

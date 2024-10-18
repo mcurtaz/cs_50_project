@@ -12,8 +12,6 @@ import { Button } from "../ui/button";
 
 import { Edit, Trash } from "lucide-react";
 
-import Rating from "../ui/rating";
-
 import { useNavigate } from "react-router-dom";
 
 

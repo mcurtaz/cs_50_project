@@ -20,6 +20,29 @@ $ cd server
 $ docker compose up
 ```
 
+##### Tests
+I wrote some tests using Pytest. To run the tests you need a test PostgreSQL database. For this purpose is possibile to use docker with the following command:
+
+```shell
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p5432:5432 postgres
+```
+
+And updating the `server/tests/conftest.py` file with the correct PostgreSQL connection string
+
+```Python
+@pytest.fixture(scope="session")
+def app():    
+    app = create_app("postgresql://postgres:mysecretpassword@localhost:5432/postgres")
+    with app.app_context():
+        yield app
+```
+
+Then run the tests with:
+
+```shell
+pytest
+```
+
 #### Web app
 Inside the `server` folder create an `.env` file with the following environment variable definition:
 
@@ -33,22 +56,6 @@ $ cd web
 $ npm install
 $ npm run dev
 ```
-
-### Notes
-
-#### REST API
-The REST API is written with Python and Flask.
-
-It uses some libraries like:
-- Flask-SQLAlchemy: it's an ORM (Object-Relational Mapping). It maps database tables to Python classes, so you can interact with your database using Python objects instead of writing raw SQL queries. You can define models (Python classes) that correspond to database tables, and SQLAlchemy handles the translation between Python and SQL.
-- Flask-Smorest: is a Flask extension that simplifies the development of REST APIs by integrating Marshmallow (for data serialization and validation), SQLAlchemy (for ORM/database interaction), and OpenAPI (for API documentation).
-- Flask-Jwt-Extended: it provides JWT utilities that helps you write authentication functionalities and secure your API endpoints.
-- Pytest: I have written some tests with this Python library.
-
-#### WEB CLIENT
-I used React as library for the Web Client. I used Typescript to make Javascript type safe. To help me with styling I used Tailwind and Shadcn ui which provides you with some basic components like buttons, select and so on.
-
-With autentication I choosed to store the access token in the session storage based on [JSON Web Token Cheat by OWASP](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.md#token-storage-on-client-side). The cheatsheet suggest that this method could be vulnerable to XSS issues and provide a solution which I think it might be overkill for an Enjoy List Webapp. Notherless I may be implement it in the future.
 
 ### Future implementations
 I'd like to add more categories like music, videogames, shows etcetera.

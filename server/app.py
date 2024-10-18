@@ -27,6 +27,7 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config['SQLALCHEMY_ECHO'] = False # enable to debug
+    app.config['FLASK_DEBUG'] = False # enable to debug
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", str(secrets.SystemRandom().getrandbits(128)))
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 900 # 15 minutes
 

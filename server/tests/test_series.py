@@ -9,7 +9,7 @@ series_data = {
 }
 def test_series(test_client, session, access_token):
     response = test_client.post(
-        "/series",
+        "/api/series",
         json=series_data,
         headers={'Authorization': f'Bearer {access_token}'}
     )
@@ -24,20 +24,20 @@ def test_series(test_client, session, access_token):
     series_id = response.json["id"]
 
     response = test_client.get(
-        "/series",
+        "/api/series",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "series in series list"
-    assert len(response.json) == 1
-    assert response.json[0]["image_url"] == series_data["image_url"]
-    assert response.json[0]["title"] == series_data["title"]
-    assert response.json[0]["description"] == series_data["description"]
-    assert response.json[0]["rating"] == series_data["rating"]
-    assert response.json[0]["status"] == series_data["status"]
+    assert len(response.json["series"]) == 1
+    assert response.json["series"][0]["image_url"] == series_data["image_url"]
+    assert response.json["series"][0]["title"] == series_data["title"]
+    assert response.json["series"][0]["description"] == series_data["description"]
+    assert response.json["series"][0]["rating"] == series_data["rating"]
+    assert response.json["series"][0]["status"] == series_data["status"]
 
     response = test_client.get(
-        f"/series/{series_id}",
+        f"/api/series/{series_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
@@ -49,7 +49,7 @@ def test_series(test_client, session, access_token):
     assert response.json["status"] == series_data["status"]
 
     response = test_client.put(
-        f"/series/{series_id}",
+        f"/api/series/{series_id}",
         headers={'Authorization': f'Bearer {access_token}'},
         json={
             "description": "Best series ever!",
@@ -65,14 +65,14 @@ def test_series(test_client, session, access_token):
     assert response.json["status"] == "COMPLETED"
 
     response = test_client.delete(
-        f"/series/{series_id}",
+        f"/api/series/{series_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "series deleted"
 
     response = test_client.get(
-        f"/series/{series_id}",
+        f"/api/series/{series_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 

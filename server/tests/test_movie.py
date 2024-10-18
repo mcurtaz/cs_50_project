@@ -9,7 +9,7 @@ movie_data = {
 }
 def test_movie(test_client, session, access_token):
     response = test_client.post(
-        "/movie",
+        "/api/movie",
         json=movie_data,
         headers={'Authorization': f'Bearer {access_token}'}
     )
@@ -24,20 +24,20 @@ def test_movie(test_client, session, access_token):
     movie_id = response.json["id"]
 
     response = test_client.get(
-        "/movie",
+        "/api/movie",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "movie in movie list"
-    assert len(response.json) == 1
-    assert response.json[0]["image_url"] == movie_data["image_url"]
-    assert response.json[0]["title"] == movie_data["title"]
-    assert response.json[0]["description"] == movie_data["description"]
-    assert response.json[0]["rating"] == movie_data["rating"]
-    assert response.json[0]["status"] == movie_data["status"]
+    assert len(response.json["movies"]) == 1
+    assert response.json["movies"][0]["image_url"] == movie_data["image_url"]
+    assert response.json["movies"][0]["title"] == movie_data["title"]
+    assert response.json["movies"][0]["description"] == movie_data["description"]
+    assert response.json["movies"][0]["rating"] == movie_data["rating"]
+    assert response.json["movies"][0]["status"] == movie_data["status"]
 
     response = test_client.get(
-        f"/movie/{movie_id}",
+        f"/api/movie/{movie_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
@@ -49,7 +49,7 @@ def test_movie(test_client, session, access_token):
     assert response.json["status"] == movie_data["status"]
 
     response = test_client.put(
-        f"/movie/{movie_id}",
+        f"/api/movie/{movie_id}",
         headers={'Authorization': f'Bearer {access_token}'},
         json={
             "description": "Best movie ever!",
@@ -65,14 +65,14 @@ def test_movie(test_client, session, access_token):
     assert response.json["status"] == "COMPLETED"
 
     response = test_client.delete(
-        f"/movie/{movie_id}",
+        f"/api/movie/{movie_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "movie deleted"
 
     response = test_client.get(
-        f"/movie/{movie_id}",
+        f"/api/movie/{movie_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 

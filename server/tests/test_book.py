@@ -10,7 +10,7 @@ book_data = {
 }
 def test_book(test_client, session, access_token):
     response = test_client.post(
-        "/book",
+        "/api/book",
         json=book_data,
         headers={'Authorization': f'Bearer {access_token}'}
     )
@@ -26,21 +26,21 @@ def test_book(test_client, session, access_token):
     book_id = response.json["id"]
 
     response = test_client.get(
-        "/book",
+        "/api/book",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "book in book list"
-    assert len(response.json) == 1
-    assert response.json[0]["image_url"] == book_data["image_url"]
-    assert response.json[0]["title"] == book_data["title"]
-    assert response.json[0]["description"] == book_data["description"]
-    assert response.json[0]["author"] == book_data["author"]
-    assert response.json[0]["rating"] == book_data["rating"]
-    assert response.json[0]["status"] == book_data["status"]
+    assert len(response.json["books"]) == 1
+    assert response.json["books"][0]["image_url"] == book_data["image_url"]
+    assert response.json["books"][0]["title"] == book_data["title"]
+    assert response.json["books"][0]["description"] == book_data["description"]
+    assert response.json["books"][0]["author"] == book_data["author"]
+    assert response.json["books"][0]["rating"] == book_data["rating"]
+    assert response.json["books"][0]["status"] == book_data["status"]
 
     response = test_client.get(
-        f"/book/{book_id}",
+        f"/api/book/{book_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
@@ -53,7 +53,7 @@ def test_book(test_client, session, access_token):
     assert response.json["status"] == book_data["status"]
 
     response = test_client.put(
-        f"/book/{book_id}",
+        f"/api/book/{book_id}",
         headers={'Authorization': f'Bearer {access_token}'},
         json={
             "description": "Best book ever!",
@@ -70,14 +70,14 @@ def test_book(test_client, session, access_token):
     assert response.json["status"] == "COMPLETED"
 
     response = test_client.delete(
-        f"/book/{book_id}",
+        f"/api/book/{book_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
     assert response.status_code == 200, "book deleted"
 
     response = test_client.get(
-        f"/book/{book_id}",
+        f"/api/book/{book_id}",
         headers={'Authorization': f'Bearer {access_token}'}
     )
 
