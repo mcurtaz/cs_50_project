@@ -4,9 +4,9 @@ It's a web app to keep track of think you'd like to do. Is like a to do list but
 The backend is a REST API written using Python and flask. PostgreSQL is used as database.
 The client is written using React with Typescript and Tailwind CSS.
 
-### Run locally
+## Run locally
 
-#### Server
+### Server
 Inside the `server` folder create an `.env` file with the following environment variable definitions.
 
 ```
@@ -20,7 +20,21 @@ $ cd server
 $ docker compose up
 ```
 
-##### Tests
+### Web app
+Inside the `server` folder create an `.env` file with the following environment variable definition:
+
+```
+VITE_API_BASEURL=http://127.0.0.1:5000/api/
+```
+Run the application in development mode (ensure Node.js and npm are installed)
+
+```shell
+$ cd web
+$ npm install
+$ npm run dev
+```
+
+## Tests
 I wrote some tests using Pytest. To run the tests you need a test PostgreSQL database. For this purpose is possibile to use docker with the following command:
 
 ```shell
@@ -43,21 +57,7 @@ Then run the tests with:
 pytest
 ```
 
-#### Web app
-Inside the `server` folder create an `.env` file with the following environment variable definition:
-
-```
-VITE_API_BASEURL=http://127.0.0.1:5000/api/
-```
-Run the application in development mode (ensure Node.js and npm are installed)
-
-```shell
-$ cd web
-$ npm install
-$ npm run dev
-```
-
-### Future implementations
+## Future implementations
 I'd like to use some public API to get information about movies, books and so on.
 I'd like to add more categories like music, videogames, theater shows etcetera.
 I'd like to add more filters to find items in list.
