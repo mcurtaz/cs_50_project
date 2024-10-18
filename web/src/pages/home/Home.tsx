@@ -39,13 +39,13 @@ const Home: React.FC = () => {
   return (
     <>
        <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
-        <h1 className="text-center text-3xl font-semibold">THE ENJOY LIST</h1>
+        <h1 className="text-center text-4xl text-pink-600">THE ENJOY LIST</h1>
         <div className="w-full flex-grow py-10 overflow-hidden">
           <ScrollArea className="w-full h-full">
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
                 <Label className="font-bold">BOOKS</Label>
-                <Link className="text-pink-600" to={"/book"}>See all</Link>
+                <Link className="text-pink-600 mr-1" to={"/book"}>See all</Link>
               </div>
               <div className="min-h-20 flex flex-row gap-x-10 w-full">
                 {books.map(book => <BookCard key={book.id} book={book} setToDelete={setBookToDelete} />)}
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
                 <Label className="font-bold">MOVIES</Label>
-                <Link className="text-pink-600" to={"/movie"}>See all</Link>
+                <Link className="text-pink-600 mr-1" to={"/movie"}>See all</Link>
               </div>
               <div className="min-h-20 flex flex-row gap-x-10">
                 {movies.map(movie => <MovieCard key={movie.id} movie={movie} setToDelete={setMovieToDelete} />)}
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
                 <Label className="font-bold">SERIES</Label>
-                <Link className="text-pink-600" to={"/series"}>See all</Link>
+                <Link className="text-pink-600 mr-1" to={"/series"}>See all</Link>
               </div>
               <div className="min-h-20">
                 <div className="min-h-20 flex flex-row gap-x-10">

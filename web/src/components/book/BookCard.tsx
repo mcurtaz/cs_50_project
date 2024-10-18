@@ -23,16 +23,16 @@ const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null 
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-white-100 min-w-48 w-48 h-72 lg:min-w-64 lg:w-64 lg:h-96">
+    <Card className="bg-white-100 min-w-48 w-48 h-72 lg:min-w-56 lg:w-56 lg:h-80">
       <CardHeader>
-        <div className="w-full h-40 lg:h-64 mb-3">
+        <div className="w-full h-[12rem] lg:h-56 mb-2">
           <img 
             src={image_url ? image_url : "/book-placeholder.svg"} 
             onError={({ currentTarget })=> {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src="/book-placeholder.svg";
             }} 
-            className="w-full h-40 lg:h-64 object-cover rounded-md"/> 
+            className="w-full h-[12rem] lg:h-56 object-cover rounded-md"/> 
         </div>
       </CardHeader>
       <CardContent>
@@ -40,10 +40,10 @@ const BookCard: React.FC<{book: Book, setToDelete: Dispatch<SetStateAction<null 
         <CardDescription className="truncate">{author}</CardDescription>
       </CardContent>
       <CardFooter>
-        <div className="w-20">
+        {/* <div className="w-20">
           <Rating ratingValue={rating} onClick={()=>{}} size="sm" readonly={true}/>
-        </div>
-        <div className="flex flex-row items-center justify-end mt-2">
+        </div> */}
+        <div className="flex flex-row items-center justify-end">
           <Button onClick={()=> {navigate("/book/" + book.id)}} size="sm_icon">
             <Edit className="h-4 w-4" />
           </Button>

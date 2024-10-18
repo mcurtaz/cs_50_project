@@ -61,7 +61,8 @@ const Register: React.FC = () => {
       </div>
       <div className="w-full md:w-1/2 px-2 flex flex-col justify-between">
         <Form className="flex flex-col items-center flex-grow justify-center" method="post">
-          <h1 className="mb-10 text-2xl">SIGN UP</h1>
+          <h1 className="text-3xl text-pink-600 mb-5">THE ENJOY LIST</h1>
+          <h3 className="mb-4 text-xl">SIGN UP</h3>
           <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
             <Label htmlFor="email">Email</Label>
             <Input type="email" name="email" placeholder="Email" required/>
