@@ -58,8 +58,7 @@ $ npm run dev
 ```
 
 ### Future implementations
-I'd like to add more categories like music, videogames, shows etcetera.
-
+I'd like to use some public API to get information about movies, books and so on.
+I'd like to add more categories like music, videogames, theater shows etcetera.
 I'd like to add more filters to find items in list.
-
-I'd like to use some public API
+I'd like to use github actions and cloudformation to deploy the app with aws.
