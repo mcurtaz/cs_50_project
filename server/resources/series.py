@@ -37,7 +37,8 @@ class SeriesList(MethodView):
 			query = query.filter_by(status=request_data["status"])
 
 		if "q" in request_data:
-			query = query.filter(SeriesModel.ts_series_vector.match(request_data["q"]))
+			# query = query.filter(SeriesModel.ts_series_vector.match(request_data["q"]))
+			query = query.filter(SeriesModel.ts_series_vector.op('@@')(func.plainto_tsquery(request_data["q"])))
 		
 		seriesList = query.order_by(SeriesModel.title).paginate(page=page,per_page=per_page,error_out=False)
 

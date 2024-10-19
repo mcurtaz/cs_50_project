@@ -37,7 +37,8 @@ class MovieList(MethodView):
 			query = query.filter_by(status=request_data["status"])
 
 		if "q" in request_data:
-			query = query.filter(MovieModel.ts_movie_vector.match(request_data["q"]))
+			# query = query.filter(MovieModel.ts_movie_vector.match(request_data["q"]))
+			query = query.filter(MovieModel.ts_movie_vector.op('@@')(func.plainto_tsquery(request_data["q"])))
 		
 		movieList = query.order_by(MovieModel.title).paginate(page=page,per_page=per_page,error_out=False)
 

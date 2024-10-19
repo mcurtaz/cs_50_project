@@ -36,7 +36,8 @@ class BookList(MethodView):
 			query = query.filter_by(status=request_data["status"])
 		
 		if "q" in request_data:
-			query = query.filter(BookModel.ts_book_vector.match(request_data["q"]))
+			# query = query.filter(BookModel.ts_book_vector.match(request_data["q"]))
+			query = query.filter(BookModel.ts_book_vector.op('@@')(func.plainto_tsquery(request_data["q"])))
 		
 		booklist = query.order_by(BookModel.title).paginate(page=page,per_page=per_page,error_out=False)
 		

@@ -12,7 +12,7 @@ const Profile: React.FC = () => {
     const {user} = useContext(UserContext);
 
     return (
-      <div>
+      <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
         <h1 className="text-center text-3xl font-semibold">PROFILE</h1>
         <div className="mt-12 flex flex-col items-center">
           <div className="grid w-full max-w-sm gap-1.5 mb-8">
