@@ -39,34 +39,37 @@ const Home: React.FC = () => {
   return (
     <>
        <div className="w-full h-full flex flex-col px-6 pt-6 pb-3">
-        <h1 className="text-center text-4xl text-pink-600">THE ENJOY LIST</h1>
+        <h1 className="text-center text-4xl text-pink-600 font-semibold">THE ENJOY LIST</h1>
         <div className="w-full flex-grow py-10 overflow-hidden">
           <ScrollArea className="w-full h-full">
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
-                <Label className="font-bold">BOOKS</Label>
+                <Label className="font-bold text-xl">BOOKS</Label>
                 <Link className="text-pink-600 mr-1" to={"/book"}>See all</Link>
               </div>
               <div className="min-h-20 flex flex-row gap-x-10 w-full">
+                {books.length === 0 && <p className="mt-3">No book found. <Link className="text-pink-500 hover:text-pink-900" to="/book/add">Add your first book.</Link></p>}
                 {books.map(book => <BookCard key={book.id} book={book} setToDelete={setBookToDelete} />)}
               </div>
             </div>
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
-                <Label className="font-bold">MOVIES</Label>
+                <Label className="font-bold text-xl">MOVIES</Label>
                 <Link className="text-pink-600 mr-1" to={"/movie"}>See all</Link>
               </div>
               <div className="min-h-20 flex flex-row gap-x-10">
+                {movies.length === 0 && <p className="mt-3">No movie found. <Link className="text-pink-500 hover:text-pink-900" to="/movie/add">Add your first movie.</Link></p>}
                 {movies.map(movie => <MovieCard key={movie.id} movie={movie} setToDelete={setMovieToDelete} />)}
               </div>
             </div>
             <div className="pb-10">
               <div className="flex flex-row items-center justify-between p-2">
-                <Label className="font-bold">SERIES</Label>
+                <Label className="font-bold text-xl">SERIES</Label>
                 <Link className="text-pink-600 mr-1" to={"/series"}>See all</Link>
               </div>
               <div className="min-h-20">
                 <div className="min-h-20 flex flex-row gap-x-10">
+                  {series.length === 0 && <p className="mt-3">No series found. <Link className="text-pink-500 hover:text-pink-900" to="/series/add">Add your first series.</Link></p>}
                   {series.map(item => <SeriesCard key={item.id} series={item} setToDelete={setSeriesToDelete} />)}
                 </div>
               </div>

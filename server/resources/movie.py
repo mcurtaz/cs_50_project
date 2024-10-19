@@ -21,7 +21,7 @@ class MovieList(MethodView):
 	@blp.arguments(MovieListRequestSchema, location="query")
 	@blp.response(200, MovieListSchema)
 	def get(self, request_data):
-		print(request_data, flush=True)
+		
 		if not "page" in request_data:
 			page = 1
 		else:

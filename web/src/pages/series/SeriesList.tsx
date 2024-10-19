@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { redirect, json, useNavigate, useLoaderData } from "react-router-dom";
+import { redirect, json, useNavigate, useLoaderData, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus } from "lucide-react";
@@ -38,6 +38,7 @@ const SeriesList: React.FC = () => {
       <div className="w-full flex-grow relative overflow-hidden">
         <ScrollArea className="w-full h-full">
           <div className="p-6 gap-10 flex flex-row flex-wrap">
+            {series.length === 0 && <p className="mt-3">No series found. <Link className="text-pink-500 hover:text-pink-900" to="/series/add">Add your first series.</Link></p>}
             {series.map(item => <SeriesCard key={item.id} series={item} setToDelete={setToDelete} />)}
           </div>
         </ScrollArea>

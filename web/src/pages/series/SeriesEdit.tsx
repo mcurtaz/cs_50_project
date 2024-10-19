@@ -91,7 +91,7 @@ export const submitSeriesAction = async ({request, params}: {request: Request, p
 
   if(request.method === "PUT"){ // UPDATE BOOK
     const data = {
-      image_url: formData.get("image_url"),
+      image_url: formData.get("image_url") ?? null,
       title: formData.get("title"),
       description: formData.get("description"),
       rating: formData.get("rating"),

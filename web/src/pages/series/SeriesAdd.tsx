@@ -52,7 +52,7 @@ export const submitSeriesAdd = async ({request}: {request: Request}) => {
   const formData = await request.formData();
 
   const data = {
-    image_url: formData.get("image_url"),
+    image_url: formData.get("image_url") ?? null,
     title: formData.get("title"),
     description: formData.get("description"),
     rating: formData.get("rating"),
