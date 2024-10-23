@@ -4,6 +4,7 @@ import './App.css'
 
 import { UserContextProvider } from './store/UserContext'
 
+import Video from './pages/video/Video'
 import Login, { submitLogin } from "./pages/login/Login"
 import Register, { submitRegister } from "./pages/register/Register"
 import BookList, { fetchBookList } from './pages/books/BookList'
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
     action: submitRegister
+  },
+  {
+    path: "/video",
+    element: <Video />
   }
 ])
 
